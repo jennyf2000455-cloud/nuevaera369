@@ -4,109 +4,97 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>No Es Normal Sentirte Mal</title>
+
   <style>
     :root{
-      --bg: #0b0f0e;
-      --card: rgba(255,255,255,.06);
-      --text: #f2f5f4;
-      --muted: rgba(242,245,244,.75);
-      --accent: #33d17a;
+      --bg:#0b0f0e;
+      --card:rgba(255,255,255,.06);
+      --text:#f2f5f4;
+      --muted:rgba(242,245,244,.75);
+      --accent:#33d17a;
       --accent2:#ffd166;
-      --border: rgba(255,255,255,.12);
-      --shadow: 0 18px 60px rgba(0,0,0,.45);
-      --radius: 22px;
-      --maxW: 980px;
+      --border:rgba(255,255,255,.12);
+      --shadow:0 18px 60px rgba(0,0,0,.45);
+      --radius:22px;
+      --maxW:980px;
     }
 
     *{box-sizing:border-box}
+
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 800px at 20% 10%, rgba(51,209,122,.18), transparent 55%),
-                  radial-gradient(900px 700px at 85% 25%, rgba(255,209,102,.14), transparent 60%),
-                  var(--bg);
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:
+        radial-gradient(1200px 800px at 20% 10%, rgba(51,209,122,.18), transparent 55%),
+        radial-gradient(900px 700px at 85% 25%, rgba(255,209,102,.14), transparent 60%),
+        var(--bg);
       color:var(--text);
-      line-height:1.35;
     }
 
     .wrap{
-      max-width: var(--maxW);
-      margin: 0 auto;
-      padding: 28px 16px 56px;
+      max-width:var(--maxW);
+      margin:0 auto;
+      padding:24px 16px 56px;
     }
 
     header{
       display:flex;
+      align-items:center;
       gap:12px;
-      align-items:center;
-      justify-content:space-between;
-      padding: 6px 2px 18px;
-    }
-
-    .brand{
-      display:flex;
-      gap:10px;
-      align-items:center;
+      margin-bottom:16px;
     }
 
     .logo{
-      width:40px;height:40px;border-radius:12px;
-      background: linear-gradient(135deg, rgba(51,209,122,.9), rgba(255,209,102,.9));
-      box-shadow: var(--shadow);
+      width:40px;
+      height:40px;
+      border-radius:12px;
+      background:linear-gradient(135deg,#33d17a,#ffd166);
     }
 
-    .brand h1{
-      font-size: 16px;
+    header h1{
       margin:0;
-      letter-spacing:.2px;
+      font-size:16px;
     }
-    .brand p{
+
+    header p{
       margin:0;
-      font-size: 12px;
-      color: var(--muted);
+      font-size:12px;
+      color:var(--muted);
     }
 
     .grid{
       display:grid;
-      grid-template-columns: 1.05fr .95fr;
-      gap: 18px;
-      align-items:start;
+      grid-template-columns:1.05fr .95fr;
+      gap:18px;
     }
 
-    @media (max-width: 900px){
+    @media(max-width:900px){
       .grid{grid-template-columns:1fr}
-      header{flex-direction:column;align-items:flex-start}
     }
 
     .card{
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
     }
 
-    /* 9:16 container */
-    .videoCard{
-      padding: 14px;
-    }
+    /* VIDEO */
+    .videoCard{padding:14px}
 
     .videoFrame{
       position:relative;
       width:100%;
-      aspect-ratio: 9 / 16;
-      border-radius: calc(var(--radius) - 8px);
+      aspect-ratio:9/16;
+      border-radius:16px;
       overflow:hidden;
-      border: 1px solid rgba(255,255,255,.12);
-      background: #000;
+      background:#000;
     }
 
-    .videoFrame video{
+    .videoFrame iframe{
       width:100%;
       height:100%;
-      object-fit: cover;
-      display:block;
-      filter: contrast(1.02) saturate(1.02);
+      border:0;
     }
 
     .overlay{
@@ -115,317 +103,254 @@
       display:flex;
       flex-direction:column;
       justify-content:space-between;
-      padding: 18px 16px 14px;
-      background: linear-gradient(to bottom, rgba(0,0,0,.62) 0%, rgba(0,0,0,.22) 30%, rgba(0,0,0,.18) 60%, rgba(0,0,0,.68) 100%);
+      padding:16px;
+      background:linear-gradient(to bottom,
+        rgba(0,0,0,.65),
+        rgba(0,0,0,.25) 40%,
+        rgba(0,0,0,.25) 60%,
+        rgba(0,0,0,.7)
+      );
       pointer-events:none;
     }
 
-    .headline{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-    }
-
     .title{
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: .2px;
+      font-size:28px;
+      font-weight:800;
       margin:0;
-      text-wrap:balance;
     }
 
     .subtitle{
-      margin:0;
-      color: rgba(255,255,255,.85);
-      font-size: 13px;
-      max-width: 90%;
+      font-size:13px;
+      color:rgba(255,255,255,.85);
+      max-width:90%;
     }
 
     .caption{
-      margin: 0;
-      font-size: 14px;
-      color: rgba(255,255,255,.92);
-      max-width: 92%;
-      line-height: 1.35;
-    }
-
-    .disclaimer{
-      margin: 10px 0 0;
-      font-size: 10px;
-      color: rgba(255,255,255,.65);
-      line-height: 1.35;
+      font-size:14px;
+      line-height:1.35;
+      max-width:92%;
     }
 
     .ctaRow{
       display:flex;
       flex-direction:column;
       gap:10px;
-      pointer-events:auto; /* allow button clicks */
+      pointer-events:auto;
     }
 
     .btn{
       display:inline-flex;
-      align-items:center;
       justify-content:center;
-      gap:10px;
-      width:100%;
-      padding: 12px 14px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: linear-gradient(135deg, rgba(51,209,122,.95), rgba(51,209,122,.70));
-      color:#08110c;
-      font-weight: 800;
-      cursor:pointer;
+      align-items:center;
+      padding:12px;
+      border-radius:16px;
+      font-weight:800;
       text-decoration:none;
-      box-shadow: 0 14px 40px rgba(51,209,122,.22);
-      transition: transform .08s ease, filter .12s ease;
+      border:1px solid rgba(255,255,255,.14);
+      cursor:pointer;
     }
-    .btn:hover{filter:brightness(1.03)}
-    .btn:active{transform: scale(.99)}
+
+    .btn.primary{
+      background:linear-gradient(135deg,#33d17a,#2bbf6f);
+      color:#08110c;
+    }
 
     .btn.secondary{
-      background: rgba(255,255,255,.08);
-      color: var(--text);
-      box-shadow:none;
+      background:rgba(255,255,255,.08);
+      color:var(--text);
     }
 
-    /* Right column */
-    .infoCard{
-      padding: 18px;
+    .disclaimer{
+      font-size:10px;
+      color:rgba(255,255,255,.65);
+      margin-top:10px;
     }
 
-    .infoCard h2{
-      margin:0 0 10px;
-      font-size: 20px;
-      letter-spacing:.2px;
+    /* INFO + FORM */
+    .infoCard,.formCard{
+      padding:18px;
+      margin-bottom:18px;
     }
 
-    .bullets{
-      margin: 0 0 16px;
-      padding-left: 18px;
-      color: rgba(242,245,244,.88);
-    }
-    .bullets li{margin: 8px 0}
+    h2,h3{margin:0 0 8px}
 
-    .formCard{
-      margin-top: 18px;
-      padding: 18px;
-    }
+    ul{padding-left:18px;margin:0 0 14px}
 
-    .formCard h3{
-      margin:0 0 6px;
-      font-size: 18px;
-    }
-    .formCard p{
-      margin: 0 0 14px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    form{
-      display:grid;
-      gap: 10px;
-    }
+    li{margin:8px 0}
 
     label{
-      font-size: 12px;
-      color: rgba(242,245,244,.86);
+      font-size:12px;
+      margin:6px 0;
       display:block;
-      margin: 2px 0 6px;
     }
 
-    input, textarea, select{
+    input,textarea,select{
       width:100%;
-      padding: 12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(0,0,0,.25);
-      color: var(--text);
-      outline:none;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.25);
+      color:var(--text);
     }
-    textarea{min-height: 100px; resize: vertical}
+
+    textarea{min-height:90px}
 
     .row2{
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      grid-template-columns:1fr 1fr;
+      gap:10px;
     }
-    @media (max-width: 520px){
+
+    @media(max-width:520px){
       .row2{grid-template-columns:1fr}
-      .title{font-size: 24px}
+      .title{font-size:24px}
     }
 
     .submit{
-      margin-top: 4px;
-      background: linear-gradient(135deg, rgba(255,209,102,.95), rgba(255,209,102,.72));
-      color: #12100b;
+      margin-top:6px;
+      background:linear-gradient(135deg,#ffd166,#f0c04f);
+      color:#12100b;
+      font-weight:800;
     }
 
-    .tinyNote{
-      margin: 10px 0 0;
-      font-size: 11px;
-      color: rgba(242,245,244,.65);
-    }
-
-    .divider{
-      height:1px;
-      background: rgba(255,255,255,.10);
-      margin: 12px 0;
+    .tiny{
+      font-size:11px;
+      color:var(--muted);
+      margin-top:8px;
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1>Bienestar • Nutrición consciente</h1>
-          <p>Video 9:16 + Formulario (listo para web)</p>
-        </div>
-      </div>
-    </header>
+<div class="wrap">
 
-    <main class="grid">
-      <!-- LEFT: VIDEO -->
-      <section class="card videoCard" aria-label="Sección de video">
-        <div class="videoFrame">
-          <!-- Reemplaza "assets/tu-video.mp4" por tu video real -->
-          <iframe
-  src="https://www.youtube.com/embed/qJKnNbNWYeE?rel=0&modestbranding=1"
-  title="No Es Normal Sentirte Mal"
-  frameborder="0"
-  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-  allowfullscreen
-  style="width:100%;height:100%;border:0;">
-</iframe>
-
-
-          <div class="overlay">
-            <div class="headline">
-              <h2 class="title">No Es Normal Sentirte Mal</h2>
-              <p class="subtitle">Si te sentiste identificado, no estás solo. Tu cuerpo no te está fallando: te está hablando.</p>
-            </div>
-
-            <div>
-              <p class="caption">
-                No es normal vivir cansado, inflamado, sin energía o sin enfoque…<br/>
-                A veces solo falta entender qué necesita tu cuerpo y nutrirlo de forma consciente.
-              </p>
-
-              <div class="ctaRow" style="margin-top:12px;">
-                <a class="btn" href="#formulario">👉 Llenar el formulario</a>
-                <a class="btn secondary" href="#como-funciona">Ver cómo funciona</a>
-              </div>
-
-              <p class="disclaimer">
-                Este contenido es informativo y educativo. No diagnosticamos, no tratamos ni curamos enfermedades.
-                No reemplazamos consultas médicas ni estudios clínicos. Los resultados pueden variar.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- RIGHT: INFO + FORM -->
-      <section>
-        <div class="card infoCard" id="como-funciona">
-          <h2>Da el siguiente paso</h2>
-          <ul class="bullets">
-            <li>Conocer cómo te sientes hoy y qué te está afectando.</li>
-            <li>Enfocarnos en hábitos y nutrición consciente.</li>
-            <li>Avanzar con un plan personalizado (sin prometer curas).</li>
-          </ul>
-
-          <div class="divider"></div>
-
-          <p style="margin:0;color:var(--muted);font-size:13px;">
-            Si este mensaje te pegó fuerte, es porque probablemente tu cuerpo lleva tiempo pidiendo atención.
-            Completa el formulario y te contacto para el siguiente paso.
-          </p>
-        </div>
-
-        <div class="card formCard" id="formulario">
-          <h3>Formulario: Primer paso hacia tu bienestar</h3>
-          <p>Completa esto para conocer tu situación y guiarte de forma consciente.</p>
-
-          <!-- IMPORTANTE:
-               Este formulario ahorita no envía a ningún lado.
-               Cuando tengas tu link real (Google Form / Typeform / Jotform / tu backend),
-               cambia action="TU_LINK" o dime cuál usas y te lo conecto.
-          -->
-          <form action="" method="post" onsubmit="return handleSubmit(event)">
-            <div>
-              <label for="preocupacion">1) ¿Qué es lo que más te preocupa de tu salud hoy?</label>
-              <textarea id="preocupacion" name="preocupacion" required placeholder="Escribe aquí..."></textarea>
-            </div>
-
-            <div class="row2">
-              <div>
-                <label for="energia">2) Nivel de energía diario (1–10)</label>
-                <select id="energia" name="energia" required>
-                  <option value="" disabled selected>Selecciona</option>
-                  <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
-                  <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
-                </select>
-              </div>
-              <div>
-                <label for="sintomas">3) ¿Qué sientes más seguido?</label>
-                <select id="sintomas" name="sintomas" required>
-                  <option value="" disabled selected>Selecciona</option>
-                  <option>Cansancio</option>
-                  <option>Inflamación</option>
-                  <option>Estrés / ansiedad</option>
-                  <option>Dolor / tensión</option>
-                  <option>Falta de enfoque</option>
-                  <option>Otro</option>
-                </select>
-              </div>
-            </div>
-
-            <div>
-              <label for="motivo">4) ¿Qué te motivó a llenar este formulario?</label>
-              <textarea id="motivo" name="motivo" required placeholder="Cuéntame en tus palabras..."></textarea>
-            </div>
-
-            <div class="row2">
-              <div>
-                <label for="whatsapp">5) WhatsApp</label>
-                <input id="whatsapp" name="whatsapp" type="tel" placeholder="Ej. 956-000-0000" required />
-              </div>
-              <div>
-                <label for="correo">6) Correo</label>
-                <input id="correo" name="correo" type="email" placeholder="tucorreo@email.com" required />
-              </div>
-            </div>
-
-            <button class="btn submit" type="submit">✅ Enviar y dar el siguiente paso</button>
-
-            <p class="tinyNote">
-              *Disclaimer: Este formulario no es diagnóstico médico. No sustituye consulta con profesionales de salud.
-            </p>
-          </form>
-        </div>
-      </section>
-    </main>
+<header>
+  <div class="logo"></div>
+  <div>
+    <h1>Bienestar & Nutrición Consciente</h1>
+    <p>Video + formulario</p>
   </div>
+</header>
 
-  <script>
-    // Demo: muestra un "enviado" sin backend.
-    // Si quieres que llegue a tu correo/WhatsApp o Google Sheet, dime qué plataforma usarás (Google Forms, Typeform, Jotform, etc.)
-    function handleSubmit(e){
-      e.preventDefault();
+<main class="grid">
 
-      // Aquí podrías mandar a un backend / Google Sheets / etc.
-      // Por ahora solo confirmamos.
-      alert("¡Listo! Recibí tu información. En breve te contacto para el siguiente paso.");
-      e.target.reset();
+<!-- VIDEO -->
+<section class="card videoCard">
+  <div class="videoFrame">
 
-      // Opcional: vuelve arriba al video
-      window.location.hash = "";
-      return false;
-    }
-  </script>
+    <!-- VIDEO DE YOUTUBE -->
+    <iframe
+      src="https://www.youtube.com/embed/qJKnNbNWYeE?rel=0&modestbranding=1"
+      title="No Es Normal Sentirte Mal"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen>
+    </iframe>
+
+    <div class="overlay">
+      <div>
+        <h2 class="title">No Es Normal Sentirte Mal</h2>
+        <p class="subtitle">
+          Tu cuerpo no te está fallando. Te está hablando.
+        </p>
+      </div>
+
+      <div>
+        <p class="caption">
+          No es normal vivir cansado, inflamado o sin energía.
+          A veces solo falta nutrir el cuerpo de forma consciente.
+        </p>
+
+        <div class="ctaRow">
+          <a href="#formulario" class="btn primary">👉 Llenar el formulario</a>
+          <a href="#como-funciona" class="btn secondary">Ver cómo funciona</a>
+        </div>
+
+        <p class="disclaimer">
+          Contenido informativo y educativo. No diagnosticamos, no tratamos ni curamos enfermedades.
+          No sustituye consulta médica. Resultados pueden variar.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- INFO + FORM -->
+<section>
+
+<div class="card infoCard" id="como-funciona">
+  <h2>Da el siguiente paso</h2>
+  <ul>
+    <li>Escucha lo que tu cuerpo te está diciendo</li>
+    <li>Mejora hábitos y nutrición de forma consciente</li>
+    <li>Proceso guiado y personalizado</li>
+  </ul>
+  <p style="font-size:13px;color:var(--muted)">
+    Si este mensaje resonó contigo, este paso es para ti.
+  </p>
+</div>
+
+<div class="card formCard" id="formulario">
+  <h3>Formulario de Bienestar</h3>
+  <p style="font-size:13px;color:var(--muted)">
+    Completa este formulario para dar el siguiente paso.
+  </p>
+
+  <form onsubmit="return enviarFormulario(event)">
+    <label>¿Qué es lo que más te preocupa de tu salud hoy?</label>
+    <textarea required></textarea>
+
+    <div class="row2">
+      <div>
+        <label>Nivel de energía (1–10)</label>
+        <select required>
+          <option value="">Selecciona</option>
+          <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+          <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+        </select>
+      </div>
+      <div>
+        <label>Síntoma principal</label>
+        <select required>
+          <option value="">Selecciona</option>
+          <option>Cansancio</option>
+          <option>Inflamación</option>
+          <option>Estrés</option>
+          <option>Falta de enfoque</option>
+          <option>Otro</option>
+        </select>
+      </div>
+    </div>
+
+    <label>WhatsApp</label>
+    <input type="tel" placeholder="956-000-0000" required>
+
+    <label>Correo</label>
+    <input type="email" placeholder="correo@email.com" required>
+
+    <button class="btn submit" type="submit">
+      ✅ Enviar y continuar
+    </button>
+
+    <p class="tiny">
+      *Este formulario no es diagnóstico médico ni sustituye consulta profesional.
+    </p>
+  </form>
+</div>
+
+</section>
+
+</main>
+</div>
+
+<script>
+function enviarFormulario(e){
+  e.preventDefault();
+  alert("Gracias. En breve nos pondremos en contacto contigo.");
+  e.target.reset();
+  return false;
+}
+</script>
+
 </body>
 </html>
