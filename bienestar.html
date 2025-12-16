@@ -1,113 +1,431 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bienestar | Nueva Era 369</title>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>No Es Normal Sentirte Mal</title>
   <style>
-    body {
+    :root{
+      --bg: #0b0f0e;
+      --card: rgba(255,255,255,.06);
+      --text: #f2f5f4;
+      --muted: rgba(242,245,244,.75);
+      --accent: #33d17a;
+      --accent2:#ffd166;
+      --border: rgba(255,255,255,.12);
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --radius: 22px;
+      --maxW: 980px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(1200px 800px at 20% 10%, rgba(51,209,122,.18), transparent 55%),
+                  radial-gradient(900px 700px at 85% 25%, rgba(255,209,102,.14), transparent 60%),
+                  var(--bg);
+      color:var(--text);
+      line-height:1.35;
+    }
+
+    .wrap{
+      max-width: var(--maxW);
+      margin: 0 auto;
+      padding: 28px 16px 56px;
+    }
+
+    header{
+      display:flex;
+      gap:12px;
+      align-items:center;
+      justify-content:space-between;
+      padding: 6px 2px 18px;
+    }
+
+    .brand{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+
+    .logo{
+      width:40px;height:40px;border-radius:12px;
+      background: linear-gradient(135deg, rgba(51,209,122,.9), rgba(255,209,102,.9));
+      box-shadow: var(--shadow);
+    }
+
+    .brand h1{
+      font-size: 16px;
+      margin:0;
+      letter-spacing:.2px;
+    }
+    .brand p{
+      margin:0;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 18px;
+      align-items:start;
+    }
+
+    @media (max-width: 900px){
+      .grid{grid-template-columns:1fr}
+      header{flex-direction:column;align-items:flex-start}
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    /* 9:16 container */
+    .videoCard{
+      padding: 14px;
+    }
+
+    .videoFrame{
+      position:relative;
+      width:100%;
+      aspect-ratio: 9 / 16;
+      border-radius: calc(var(--radius) - 8px);
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.12);
+      background: #000;
+    }
+
+    .videoFrame video{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+      filter: contrast(1.02) saturate(1.02);
+    }
+
+    .overlay{
+      position:absolute;
+      inset:0;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      padding: 18px 16px 14px;
+      background: linear-gradient(to bottom, rgba(0,0,0,.62) 0%, rgba(0,0,0,.22) 30%, rgba(0,0,0,.18) 60%, rgba(0,0,0,.68) 100%);
+      pointer-events:none;
+    }
+
+    .headline{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .title{
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: .2px;
+      margin:0;
+      text-wrap:balance;
+    }
+
+    .subtitle{
+      margin:0;
+      color: rgba(255,255,255,.85);
+      font-size: 13px;
+      max-width: 90%;
+    }
+
+    .caption{
       margin: 0;
-      min-height: 100vh;
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, #00c6ff, #0072ff, #00ff9d);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-    }
-
-    .container {
-      background: rgba(0,0,0,0.35);
-      padding: 50px 35px;
-      border-radius: 22px;
-      max-width: 900px;
-      width: 90%;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 42px;
-      margin-bottom: 25px;
-      letter-spacing: 1px;
-    }
-
-    p {
-      font-size: 20px;
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
-
-    .divider {
-      height: 2px;
-      width: 80px;
-      margin: 30px auto;
-      background: white;
-      opacity: 0.5;
-      border-radius: 10px;
-    }
-
-    .disclaimer {
       font-size: 14px;
-      opacity: 0.85;
-      margin-top: 30px;
-      line-height: 1.5;
-      text-align: left;
+      color: rgba(255,255,255,.92);
+      max-width: 92%;
+      line-height: 1.35;
     }
 
-    .button {
-      display: inline-block;
-      margin-top: 30px;
-      padding: 14px 28px;
-      border-radius: 30px;
-      background: white;
-      color: #0072ff;
-      font-weight: bold;
-      text-decoration: none;
+    .disclaimer{
+      margin: 10px 0 0;
+      font-size: 10px;
+      color: rgba(255,255,255,.65);
+      line-height: 1.35;
+    }
+
+    .ctaRow{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      pointer-events:auto; /* allow button clicks */
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      width:100%;
+      padding: 12px 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: linear-gradient(135deg, rgba(51,209,122,.95), rgba(51,209,122,.70));
+      color:#08110c;
+      font-weight: 800;
+      cursor:pointer;
+      text-decoration:none;
+      box-shadow: 0 14px 40px rgba(51,209,122,.22);
+      transition: transform .08s ease, filter .12s ease;
+    }
+    .btn:hover{filter:brightness(1.03)}
+    .btn:active{transform: scale(.99)}
+
+    .btn.secondary{
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      box-shadow:none;
+    }
+
+    /* Right column */
+    .infoCard{
+      padding: 18px;
+    }
+
+    .infoCard h2{
+      margin:0 0 10px;
+      font-size: 20px;
+      letter-spacing:.2px;
+    }
+
+    .bullets{
+      margin: 0 0 16px;
+      padding-left: 18px;
+      color: rgba(242,245,244,.88);
+    }
+    .bullets li{margin: 8px 0}
+
+    .formCard{
+      margin-top: 18px;
+      padding: 18px;
+    }
+
+    .formCard h3{
+      margin:0 0 6px;
       font-size: 18px;
-      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .formCard p{
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 13px;
     }
 
-    .button:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    form{
+      display:grid;
+      gap: 10px;
+    }
+
+    label{
+      font-size: 12px;
+      color: rgba(242,245,244,.86);
+      display:block;
+      margin: 2px 0 6px;
+    }
+
+    input, textarea, select{
+      width:100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.25);
+      color: var(--text);
+      outline:none;
+    }
+    textarea{min-height: 100px; resize: vertical}
+
+    .row2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    @media (max-width: 520px){
+      .row2{grid-template-columns:1fr}
+      .title{font-size: 24px}
+    }
+
+    .submit{
+      margin-top: 4px;
+      background: linear-gradient(135deg, rgba(255,209,102,.95), rgba(255,209,102,.72));
+      color: #12100b;
+    }
+
+    .tinyNote{
+      margin: 10px 0 0;
+      font-size: 11px;
+      color: rgba(242,245,244,.65);
+    }
+
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,.10);
+      margin: 12px 0;
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <h1>Bienestar que empieza desde adentro</h1>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Bienestar • Nutrición consciente</h1>
+          <p>Video 9:16 + Formulario (listo para web)</p>
+        </div>
+      </div>
+    </header>
 
-    <p>
-      Tu cuerpo habla todos los días, solo necesitas aprender a escucharlo.
-    </p>
+    <main class="grid">
+      <!-- LEFT: VIDEO -->
+      <section class="card videoCard" aria-label="Sección de video">
+        <div class="videoFrame">
+          <!-- Reemplaza "assets/tu-video.mp4" por tu video real -->
+          <video
+            src="assets/tu-video.mp4"
+            muted
+            playsinline
+            autoplay
+            loop
+            controls
+            preload="metadata"
+          ></video>
 
-    <p>
-      En este espacio encontrarás herramientas y productos pensados para apoyar tu bienestar,
-      ayudarte a recuperar balance y darte claridad sobre lo que tu cuerpo necesita.
-    </p>
+          <div class="overlay">
+            <div class="headline">
+              <h2 class="title">No Es Normal Sentirte Mal</h2>
+              <p class="subtitle">Si te sentiste identificado, no estás solo. Tu cuerpo no te está fallando: te está hablando.</p>
+            </div>
 
-    <p>
-      Aquí empiezas a tomar el control de tu bienestar desde adentro,
-      con decisiones informadas y acompañamiento real.
-    </p>
+            <div>
+              <p class="caption">
+                No es normal vivir cansado, inflamado, sin energía o sin enfoque…<br/>
+                A veces solo falta entender qué necesita tu cuerpo y nutrirlo de forma consciente.
+              </p>
 
-    <div class="divider"></div>
+              <div class="ctaRow" style="margin-top:12px;">
+                <a class="btn" href="#formulario">👉 Llenar el formulario</a>
+                <a class="btn secondary" href="#como-funciona">Ver cómo funciona</a>
+              </div>
 
-    <a class="button" href="https://wa.me/19564421379" target="_blank">
-      📲 Quiero más información
-    </a>
+              <p class="disclaimer">
+                Este contenido es informativo y educativo. No diagnosticamos, no tratamos ni curamos enfermedades.
+                No reemplazamos consultas médicas ni estudios clínicos. Los resultados pueden variar.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
 
-    <div class="disclaimer">
-      <strong>Aviso importante:</strong><br>
-      La información y los productos compartidos en este sitio están destinados únicamente a fines de bienestar general.
-      No sustituyen diagnóstico médico, tratamiento ni asesoramiento profesional.
-      No somos médicos ni profesionales de la salud.
-      Siempre consulta con tu médico o proveedor de salud antes de iniciar cualquier cambio en tu alimentación,
-      suplementación o estilo de vida.
-    </div>
+      <!-- RIGHT: INFO + FORM -->
+      <section>
+        <div class="card infoCard" id="como-funciona">
+          <h2>Da el siguiente paso</h2>
+          <ul class="bullets">
+            <li>Conocer cómo te sientes hoy y qué te está afectando.</li>
+            <li>Enfocarnos en hábitos y nutrición consciente.</li>
+            <li>Avanzar con un plan personalizado (sin prometer curas).</li>
+          </ul>
+
+          <div class="divider"></div>
+
+          <p style="margin:0;color:var(--muted);font-size:13px;">
+            Si este mensaje te pegó fuerte, es porque probablemente tu cuerpo lleva tiempo pidiendo atención.
+            Completa el formulario y te contacto para el siguiente paso.
+          </p>
+        </div>
+
+        <div class="card formCard" id="formulario">
+          <h3>Formulario: Primer paso hacia tu bienestar</h3>
+          <p>Completa esto para conocer tu situación y guiarte de forma consciente.</p>
+
+          <!-- IMPORTANTE:
+               Este formulario ahorita no envía a ningún lado.
+               Cuando tengas tu link real (Google Form / Typeform / Jotform / tu backend),
+               cambia action="TU_LINK" o dime cuál usas y te lo conecto.
+          -->
+          <form action="" method="post" onsubmit="return handleSubmit(event)">
+            <div>
+              <label for="preocupacion">1) ¿Qué es lo que más te preocupa de tu salud hoy?</label>
+              <textarea id="preocupacion" name="preocupacion" required placeholder="Escribe aquí..."></textarea>
+            </div>
+
+            <div class="row2">
+              <div>
+                <label for="energia">2) Nivel de energía diario (1–10)</label>
+                <select id="energia" name="energia" required>
+                  <option value="" disabled selected>Selecciona</option>
+                  <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                  <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+                </select>
+              </div>
+              <div>
+                <label for="sintomas">3) ¿Qué sientes más seguido?</label>
+                <select id="sintomas" name="sintomas" required>
+                  <option value="" disabled selected>Selecciona</option>
+                  <option>Cansancio</option>
+                  <option>Inflamación</option>
+                  <option>Estrés / ansiedad</option>
+                  <option>Dolor / tensión</option>
+                  <option>Falta de enfoque</option>
+                  <option>Otro</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label for="motivo">4) ¿Qué te motivó a llenar este formulario?</label>
+              <textarea id="motivo" name="motivo" required placeholder="Cuéntame en tus palabras..."></textarea>
+            </div>
+
+            <div class="row2">
+              <div>
+                <label for="whatsapp">5) WhatsApp</label>
+                <input id="whatsapp" name="whatsapp" type="tel" placeholder="Ej. 956-000-0000" required />
+              </div>
+              <div>
+                <label for="correo">6) Correo</label>
+                <input id="correo" name="correo" type="email" placeholder="tucorreo@email.com" required />
+              </div>
+            </div>
+
+            <button class="btn submit" type="submit">✅ Enviar y dar el siguiente paso</button>
+
+            <p class="tinyNote">
+              *Disclaimer: Este formulario no es diagnóstico médico. No sustituye consulta con profesionales de salud.
+            </p>
+          </form>
+        </div>
+      </section>
+    </main>
   </div>
+
+  <script>
+    // Demo: muestra un "enviado" sin backend.
+    // Si quieres que llegue a tu correo/WhatsApp o Google Sheet, dime qué plataforma usarás (Google Forms, Typeform, Jotform, etc.)
+    function handleSubmit(e){
+      e.preventDefault();
+
+      // Aquí podrías mandar a un backend / Google Sheets / etc.
+      // Por ahora solo confirmamos.
+      alert("¡Listo! Recibí tu información. En breve te contacto para el siguiente paso.");
+      e.target.reset();
+
+      // Opcional: vuelve arriba al video
+      window.location.hash = "";
+      return false;
+    }
+  </script>
 </body>
 </html>
