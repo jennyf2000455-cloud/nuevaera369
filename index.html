@@ -145,7 +145,6 @@
       .videoGrid{ justify-content:center; }
       .videoCard{ width:100%; max-width:420px; }
     }
-
     .videoFrame{
       position:relative;
       width:100%;
@@ -196,7 +195,6 @@
       background:rgba(255,255,255,.08);
       color:var(--text);
     }
-
     .disclaimer{
       margin:10px 0 0;
       font-size:10px;
@@ -223,7 +221,6 @@
     textarea{min-height:96px;resize:vertical}
     .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     @media(max-width:520px){ .row2{grid-template-columns:1fr} }
-
     .submit{
       margin-top:6px;
       background:linear-gradient(135deg,#ffd166,#f0c04f);
@@ -232,43 +229,12 @@
     }
     .tiny{margin:10px 0 0;font-size:11px;color:var(--muted);}
 
-    /* ===== Sección IA (con botón pop-out) ===== */
+    /* ===== Sección IA (texto + cómo usar) ===== */
     .aiWrap{
       display:grid;
-      grid-template-columns: 320px 1fr;
+      grid-template-columns: 1fr;
       gap:14px;
       padding:14px;
-      align-items:start;
-    }
-    @media(max-width:900px){
-      .aiWrap{ grid-template-columns: 1fr; }
-    }
-    .aiBotCard{
-      padding:14px;
-      text-align:center;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      border-radius: 18px;
-    }
-    .aiBotImg{
-      width: 220px;
-      max-width: 70%;
-      height:auto;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.25);
-      box-shadow: 0 16px 50px rgba(0,0,0,.45);
-    }
-    .aiTitle{
-      margin:12px 0 6px;
-      font-weight: 950;
-      letter-spacing:.2px;
-      font-size: 14px;
-    }
-    .aiSub{
-      margin:0;
-      color: rgba(242,245,244,.78);
-      font-size: 12.5px;
     }
     .aiInfo{
       padding:14px;
@@ -293,9 +259,9 @@
     .modalBox{
       width: min(1060px, 95vw);
       height: min(720px, 92vh);
-      background: rgba(0,0,0,.96);
-      outline: 2px solid rgba(255,255,255,.10);
-      filter: saturate(1.05) contrast(1.08);
+      background: rgba(0,0,0,.96);                /* ✅ más oscuro */
+      outline: 2px solid rgba(255,255,255,.10);   /* ✅ borde sutil */
+      filter: saturate(1.05) contrast(1.08);      /* ✅ más contraste */
       border:1px solid rgba(255,255,255,.14);
       border-radius: 22px;
       box-shadow: 0 22px 80px rgba(0,0,0,.60);
@@ -332,18 +298,15 @@
       border-radius: 14px;
       font-weight: 900;
       cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
     }
     .modalBtn:active{ transform: scale(.99); }
 
-    .modalFrame{
-      flex:1;
-      background:#000;
-    }
-    .modalFrame iframe{
-      width:100%;
-      height:100%;
-      border:0;
-    }
+    .modalFrame{ flex:1; background:#000; }
+    .modalFrame iframe{ width:100%; height:100%; border:0; }
 
     /* Footer social */
     footer{
@@ -370,6 +333,53 @@
       text-decoration:none;
     }
     .iconBtn svg{ width:22px; height:22px; fill: rgba(255,255,255,.92); }
+
+    /* ===== Bot flotante (FAB) ===== */
+    .fab-ai{
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 10000;
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.35);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      padding: 0;
+    }
+    .fab-ai:hover{ filter: brightness(1.06); }
+    .fab-ai:active{ transform: scale(.98); }
+
+    .fab-ai img{
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+    }
+
+    .fab-ai::before{
+      content:"";
+      position:absolute;
+      inset:-10px;
+      border-radius: 24px;
+      border: 2px solid rgba(120,210,255,.20);
+      animation: fabPulse 1.8s ease-in-out infinite;
+    }
+    @keyframes fabPulse{
+      0%{ transform: scale(.92); opacity: .15; }
+      50%{ transform: scale(1.05); opacity: .35; }
+      100%{ transform: scale(.92); opacity: .15; }
+    }
+
+    @media (max-width:520px){
+      .fab-ai{ right: 14px; bottom: 14px; }
+    }
   </style>
 </head>
 
@@ -428,50 +438,25 @@
         </div>
       </section>
 
-      <!-- IA BOT (POP-OUT) -->
+      <!-- IA INFO (el chat abre con el bot flotante) -->
       <section class="card" id="ai">
         <div class="sectionTitle">
           <h2>Canal de Educación IA</h2>
         </div>
 
         <div class="aiWrap">
-          <div class="aiBotCard">
-            <img class="aiBotImg" src="vh-bot.png" alt="Vital Health AI Bot" />
-            <div class="aiTitle">Vital Health AI</div>
-            <p class="aiSub">Toca el botón para abrir el chat en pop-out.</p>
-
-            <div class="btnRow" style="margin-top:12px;">
-              <button class="btn primary" id="openAI" type="button">
-                🤖 Abrir Vital Health AI (Pop-out)
-              </button>
-
-              <a class="btn secondary"
-                 href="https://wa.me/19564421379?text=Hola%20Genesis%2C%20quiero%20ayuda%20con%20Vital%20Health%20Global%20y%20tambien%20quiero%20probar%20la%20IA.%20%C2%BFMe%20orientas%3F"
-                 target="_blank" rel="noopener">
-                💬 WhatsApp
-              </a>
-
-              <a class="btn secondary"
-                 href="https://app.relevanceai.com/agents/d7b62b/3771ceca-5688-4567-9447-dfdde9f4d995/c15f3ad3-8c1c-4082-8992-a4ed89e30dfc/embed-chat?hide_tool_steps=false&hide_file_uploads=false&hide_conversation_list=false&bubble_style=agent&primary_color=%23685FFF&bubble_icon=pd%2Fchat&input_placeholder_text=Type+your+message...&hide_logo=false&hide_description=false"
-                 target="_blank" rel="noopener">
-                🧠 Abrir en pestaña nueva
-              </a>
-            </div>
-
-            <p class="disclaimer">
-              Esta IA es informativa. No diagnostica, no trata ni cura enfermedades. No reemplaza atención médica.
-            </p>
-          </div>
-
           <div class="aiInfo">
-            <h3 style="margin:0 0 10px;">Cómo usarla</h3>
+            <h3 style="margin:0 0 10px;">Vital Health AI</h3>
+            <p class="note" style="margin:0 0 10px;">
+              Para abrir el chat, toca el bot flotante 🤖 (abajo a la derecha).
+            </p>
             <ul>
               <li>Escribe tu meta: energía, estrés, digestión, sueño, control de peso, etc.</li>
               <li>Describe cómo te sientes (sin datos sensibles).</li>
-              <li>Si quieres plan, llena el formulario al final.</li>
+              <li>Si quieres un plan, llena el formulario al final.</li>
             </ul>
-            <p class="note" style="margin:0;">
-              Tip: también puedes abrirla en pestaña nueva si tu compu es lenta.
+            <p class="disclaimer" style="margin:0;">
+              Esta IA es informativa. No diagnostica, no trata ni cura enfermedades. No reemplaza atención médica.
             </p>
           </div>
         </div>
@@ -635,13 +620,18 @@
     </div>
   </div>
 
+  <!-- Bot flotante AI -->
+  <button class="fab-ai" id="fabAI" type="button" aria-label="Abrir Vital Health AI">
+    <img src="vh-bot.png" alt="Vital Health AI" />
+  </button>
+
   <script>
-    // ===== Modal IA =====
+    // ===== Modal IA (abre/cierra) =====
     (function(){
-      const openBtn = document.getElementById("openAI");
       const modal = document.getElementById("aiModal");
       const closeBtn = document.getElementById("closeAI");
       const iframe = document.getElementById("aiIframe");
+      const fabBtn = document.getElementById("fabAI");
 
       const AI_URL = "https://app.relevanceai.com/agents/d7b62b/3771ceca-5688-4567-9447-dfdde9f4d995/c15f3ad3-8c1c-4082-8992-a4ed89e30dfc/embed-chat?hide_tool_steps=false&hide_file_uploads=false&hide_conversation_list=false&bubble_style=agent&primary_color=%23685FFF&bubble_icon=pd%2Fchat&input_placeholder_text=Type+your+message...&hide_logo=false&hide_description=false";
 
@@ -655,25 +645,23 @@
         modal.classList.remove("open");
         modal.setAttribute("aria-hidden","true");
         document.body.style.overflow = "";
-        iframe.src = ""; // corta carga cuando cierras
+        iframe.src = "";
       }
 
-      openBtn.addEventListener("click", openModal);
+      fabBtn.addEventListener("click", openModal);
       closeBtn.addEventListener("click", closeModal);
 
-      // click fuera del cuadro cierra
       modal.addEventListener("click", (e)=>{
         if(e.target === modal) closeModal();
       });
 
-      // ESC cierra
       window.addEventListener("keydown", (e)=>{
         if(!modal.classList.contains("open")) return;
         if(e.key === "Escape") closeModal();
       });
     })();
 
-    // ===== Partículas visibles =====
+    // ===== Partículas =====
     (function(){
       const canvas = document.getElementById("particles");
       const ctx = canvas.getContext("2d");
