@@ -59,7 +59,7 @@
       opacity: 1;
     }
 
-    /* ====== Layout general (orillas) ====== */
+    /* Layout general (orillas) */
     .wrap{
       max-width: 100%;
       margin: 0 auto;
@@ -127,7 +127,7 @@
       gap:18px;
     }
 
-    /* ===== Videos opción A: chicos y a orillas ===== */
+    /* Videos opción A: chicos y a orillas */
     .videoGrid{
       display:flex;
       justify-content:space-between;
@@ -232,7 +232,7 @@
     }
     .tiny{margin:10px 0 0;font-size:11px;color:var(--muted);}
 
-    /* ===== Sección IA Bot ===== */
+    /* ===== Sección IA (con botón pop-out) ===== */
     .aiWrap{
       display:grid;
       grid-template-columns: 320px 1fr;
@@ -270,21 +270,79 @@
       color: rgba(242,245,244,.78);
       font-size: 12.5px;
     }
-    .aiFrame{
-      padding:12px;
+    .aiInfo{
+      padding:14px;
       border:1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.18);
       border-radius: 18px;
     }
-    .aiEmbed{
-      width:100%;
-      height: 520px;
-      border:0;
-      border-radius: 16px;
+
+    /* ===== MODAL POP-OUT IA ===== */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background: rgba(0,0,0,.78);
+      z-index: 9999;
+      padding: 16px;
+    }
+    .modal.open{ display:flex; }
+
+    .modalBox{
+      width: min(1060px, 95vw);
+      height: min(720px, 92vh);
+      background: rgba(0,0,0,.96);
+      outline: 2px solid rgba(255,255,255,.10);
+      filter: saturate(1.05) contrast(1.08);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: 22px;
+      box-shadow: 0 22px 80px rgba(0,0,0,.60);
+      overflow:hidden;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+    }
+    .modalTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 12px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+    }
+    .modalTitle{
+      font-weight: 950;
+      font-size: 13px;
+      color: rgba(255,255,255,.92);
+      letter-spacing:.2px;
+    }
+    .modalActions{
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    .modalBtn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.10);
+      color:#fff;
+      padding: 8px 10px;
+      border-radius: 14px;
+      font-weight: 900;
+      cursor:pointer;
+    }
+    .modalBtn:active{ transform: scale(.99); }
+
+    .modalFrame{
+      flex:1;
       background:#000;
     }
-    @media(max-width:520px){
-      .aiEmbed{ height: 560px; }
+    .modalFrame iframe{
+      width:100%;
+      height:100%;
+      border:0;
     }
 
     /* Footer social */
@@ -370,7 +428,7 @@
         </div>
       </section>
 
-      <!-- IA BOT -->
+      <!-- IA BOT (POP-OUT) -->
       <section class="card" id="ai">
         <div class="sectionTitle">
           <h2>Canal de Educación IA</h2>
@@ -380,19 +438,23 @@
           <div class="aiBotCard">
             <img class="aiBotImg" src="vh-bot.png" alt="Vital Health AI Bot" />
             <div class="aiTitle">Vital Health AI</div>
-            <p class="aiSub">Haz tus preguntas aquí o ábrelo en pantalla completa.</p>
+            <p class="aiSub">Toca el botón para abrir el chat en pop-out.</p>
 
             <div class="btnRow" style="margin-top:12px;">
-              <a class="btn primary"
-                 href="https://app.relevanceai.com/agents/d7b62b/3771ceca-5688-4567-9447-dfdde9f4d995/c15f3ad3-8c1c-4082-8992-a4ed89e30dfc/embed-chat?hide_tool_steps=false&hide_file_uploads=false&hide_conversation_list=false&bubble_style=agent&primary_color=%23685FFF&bubble_icon=pd%2Fchat&input_placeholder_text=Type+your+message...&hide_logo=false&hide_description=false"
-                 target="_blank" rel="noopener">
-                🤖 Abrir Vital Health AI
-              </a>
+              <button class="btn primary" id="openAI" type="button">
+                🤖 Abrir Vital Health AI (Pop-out)
+              </button>
 
               <a class="btn secondary"
                  href="https://wa.me/19564421379?text=Hola%20Genesis%2C%20quiero%20ayuda%20con%20Vital%20Health%20Global%20y%20tambien%20quiero%20probar%20la%20IA.%20%C2%BFMe%20orientas%3F"
                  target="_blank" rel="noopener">
                 💬 WhatsApp
+              </a>
+
+              <a class="btn secondary"
+                 href="https://app.relevanceai.com/agents/d7b62b/3771ceca-5688-4567-9447-dfdde9f4d995/c15f3ad3-8c1c-4082-8992-a4ed89e30dfc/embed-chat?hide_tool_steps=false&hide_file_uploads=false&hide_conversation_list=false&bubble_style=agent&primary_color=%23685FFF&bubble_icon=pd%2Fchat&input_placeholder_text=Type+your+message...&hide_logo=false&hide_description=false"
+                 target="_blank" rel="noopener">
+                🧠 Abrir en pestaña nueva
               </a>
             </div>
 
@@ -401,13 +463,16 @@
             </p>
           </div>
 
-          <div class="aiFrame">
-            <iframe class="aiEmbed"
-              src="https://app.relevanceai.com/agents/d7b62b/3771ceca-5688-4567-9447-dfdde9f4d995/c15f3ad3-8c1c-4082-8992-a4ed89e30dfc/embed-chat?hide_tool_steps=false&hide_file_uploads=false&hide_conversation_list=false&bubble_style=agent&primary_color=%23685FFF&bubble_icon=pd%2Fchat&input_placeholder_text=Type+your+message...&hide_logo=false&hide_description=false"
-              title="Vital Health AI Chat"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+          <div class="aiInfo">
+            <h3 style="margin:0 0 10px;">Cómo usarla</h3>
+            <ul>
+              <li>Escribe tu meta: energía, estrés, digestión, sueño, control de peso, etc.</li>
+              <li>Describe cómo te sientes (sin datos sensibles).</li>
+              <li>Si quieres plan, llena el formulario al final.</li>
+            </ul>
+            <p class="note" style="margin:0;">
+              Tip: también puedes abrirla en pestaña nueva si tu compu es lenta.
+            </p>
           </div>
         </div>
       </section>
@@ -545,8 +610,70 @@
     </main>
   </div>
 
+  <!-- MODAL POP-OUT IA -->
+  <div class="modal" id="aiModal" aria-hidden="true">
+    <div class="modalBox" role="dialog" aria-modal="true" aria-label="Vital Health AI">
+      <div class="modalTop">
+        <div class="modalTitle">Vital Health AI (Pop-out)</div>
+        <div class="modalActions">
+          <a class="modalBtn"
+             href="https://app.relevanceai.com/agents/d7b62b/3771ceca-5688-4567-9447-dfdde9f4d995/c15f3ad3-8c1c-4082-8992-a4ed89e30dfc/embed-chat?hide_tool_steps=false&hide_file_uploads=false&hide_conversation_list=false&bubble_style=agent&primary_color=%23685FFF&bubble_icon=pd%2Fchat&input_placeholder_text=Type+your+message...&hide_logo=false&hide_description=false"
+             target="_blank" rel="noopener">Abrir en pestaña</a>
+          <button class="modalBtn" id="closeAI" type="button">Cerrar ✕</button>
+        </div>
+      </div>
+
+      <div class="modalFrame">
+        <iframe
+          id="aiIframe"
+          src=""
+          title="Vital Health AI Chat"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+  </div>
+
   <script>
-    // Partículas visibles
+    // ===== Modal IA =====
+    (function(){
+      const openBtn = document.getElementById("openAI");
+      const modal = document.getElementById("aiModal");
+      const closeBtn = document.getElementById("closeAI");
+      const iframe = document.getElementById("aiIframe");
+
+      const AI_URL = "https://app.relevanceai.com/agents/d7b62b/3771ceca-5688-4567-9447-dfdde9f4d995/c15f3ad3-8c1c-4082-8992-a4ed89e30dfc/embed-chat?hide_tool_steps=false&hide_file_uploads=false&hide_conversation_list=false&bubble_style=agent&primary_color=%23685FFF&bubble_icon=pd%2Fchat&input_placeholder_text=Type+your+message...&hide_logo=false&hide_description=false";
+
+      function openModal(){
+        iframe.src = AI_URL;
+        modal.classList.add("open");
+        modal.setAttribute("aria-hidden","false");
+        document.body.style.overflow = "hidden";
+      }
+      function closeModal(){
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden","true");
+        document.body.style.overflow = "";
+        iframe.src = ""; // corta carga cuando cierras
+      }
+
+      openBtn.addEventListener("click", openModal);
+      closeBtn.addEventListener("click", closeModal);
+
+      // click fuera del cuadro cierra
+      modal.addEventListener("click", (e)=>{
+        if(e.target === modal) closeModal();
+      });
+
+      // ESC cierra
+      window.addEventListener("keydown", (e)=>{
+        if(!modal.classList.contains("open")) return;
+        if(e.key === "Escape") closeModal();
+      });
+    })();
+
+    // ===== Partículas visibles =====
     (function(){
       const canvas = document.getElementById("particles");
       const ctx = canvas.getContext("2d");
