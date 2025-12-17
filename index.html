@@ -256,20 +256,16 @@
     }
     .modal.open{ display:flex; }
 
-    .modalBox{
-      width: min(1060px, 95vw);
-      height: min(720px, 92vh);
-      background: rgba(0,0,0,.96);                /* ✅ más oscuro */
-      outline: 2px solid rgba(255,255,255,.10);   /* ✅ borde sutil */
-      filter: saturate(1.05) contrast(1.08);      /* ✅ más contraste */
-      border:1px solid rgba(255,255,255,.14);
-      border-radius: 22px;
-      box-shadow: 0 22px 80px rgba(0,0,0,.60);
-      overflow:hidden;
-      position:relative;
-      display:flex;
-      flex-direction:column;
-    }
+   .modalBox{
+  width: min(1060px, 95vw);
+  height: min(720px, 92vh);
+  background: rgba(0,0,0,.96);
+  outline: 2px solid rgba(255,255,255,.10);
+  filter: saturate(1.05) contrast(1.08);
+  border-radius: 22px;
+  padding: 0;
+  overflow: hidden;
+}
     .modalTop{
       display:flex;
       align-items:center;
