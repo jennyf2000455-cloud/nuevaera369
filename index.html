@@ -1,481 +1,172 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>GenArt | No es normal sentirse mal</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>GenArt | Vital Health Global</title>
 
-  <style>
-    :root{
-      --bg:#0b0f0e;
-      --card:rgba(255,255,255,.06);
-      --text:#f2f5f4;
-      --muted:rgba(242,245,244,.75);
-      --border:rgba(255,255,255,.12);
-      --shadow:0 18px 60px rgba(0,0,0,.45);
-      --radius:22px;
-      --maxW:1100px;
-    }
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
-      color:var(--text);
-      line-height:1.35;
-      background: var(--bg);
-      overflow-x:hidden;
-    }
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,Helvetica,sans-serif}
+body{
+  min-height:100vh;
+  background:url("genart-bg.jpg") center/cover no-repeat fixed;
+  color:#fff;
+  overflow-x:hidden;
+}
+.overlay{
+  background:rgba(0,0,0,.7);
+  min-height:100vh;
+  padding:30px 15px;
+  position:relative;
+}
+h1{text-align:center;font-size:2.4rem;margin-bottom:10px}
+h2{text-align:center;font-size:1.1rem;font-weight:400;margin-bottom:30px}
+.section{max-width:900px;margin:0 auto 40px auto;text-align:center}
 
-    /* Fondo con tu logo */
-    .genart-bg.jpg{
-      position:fixed;
-      inset:0;
-      z-index:-4;
-      background: url("genart-bg-jpg");
-        radial-gradient(1200px 800px at 20% 10%, rgba(51,209,122,.18), transparent 55%),
-        radial-gradient(900px 700px at 85% 25%, rgba(255,209,102,.14), transparent 60%),
-        url("assets/genart-bg.jpg");
-      background-size: cover;
-      background-position: center;
-      background-repeat:no-repeat;
-      filter: saturate(1.05) contrast(1.05);
-      transform: scale(1.02);
-    }
-    .bg-dim{
-      position:fixed;
-      inset:0;
-      z-index:-3;
-      background: rgba(0,0,0,.62);
-      backdrop-filter: blur(2px);
-    }
+.video-box{
+  max-width:420px;
+  margin:20px auto;
+  aspect-ratio:9/16;
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:0 0 20px rgba(0,255,255,.3);
+}
+iframe{width:100%;height:100%;border:0}
 
-    /* Partículas (visibles) */
-    #particles{
-      position:fixed;
-      inset:0;
-      z-index:-2;
-      width:100%;
-      height:100%;
-      pointer-events:none;
-      opacity: 1; /* importante */
-    }
+.buttons{
+  display:flex;
+  gap:15px;
+  flex-wrap:wrap;
+  justify-content:center;
+  margin:30px 0;
+}
+.btn{
+  padding:14px 24px;
+  border-radius:30px;
+  text-decoration:none;
+  font-weight:bold;
+  color:#000;
+  background:#00ffd5;
+}
+.btn.whatsapp{background:#25D366}
+.btn.buy{background:#ffd700}
 
-    .wrap{
-      max-width:var(--maxW);
-      margin:0 auto;
-      padding:22px 16px 64px;
-      position:relative;
-      z-index:1;
-    }
+form{
+  max-width:420px;
+  margin:0 auto;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+input,button{
+  padding:14px;
+  border-radius:8px;
+  border:none;
+}
+button{
+  background:#00ffd5;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-    header{
-      display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:14px;
-      margin-bottom:16px;
-    }
-    .brand{
-      display:flex;
-      gap:12px;
-      align-items:center;
-    }
-    .logoMark{
-      width:44px;height:44px;border-radius:14px;
-      background:linear-gradient(135deg,#33d17a,#ffd166);
-      box-shadow:var(--shadow);
-      flex:0 0 auto;
-    }
-    .brand h1{margin:0;font-size:18px;letter-spacing:.2px}
-    .brand p{margin:4px 0 0;font-size:12.5px;color:var(--muted);max-width: 680px}
+.disclaimer{
+  font-size:.8rem;
+  opacity:.8;
+  margin-top:20px;
+  text-align:center;
+}
 
-    .card{
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      overflow:hidden;
-    }
-
-    .sectionTitle{
-      padding: 16px 18px;
-      border-bottom: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.10);
-    }
-    .sectionTitle h2{
-      margin:0;
-      font-size:16px;
-      letter-spacing:.2px;
-    }
-
-    /* ====== GRID 2 VIDEOS ====== */
-    .content{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:18px;
-    }
-
-    .videoGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:14px;
-      padding:14px;
-    }
-    @media(max-width:900px){
-      .videoGrid{grid-template-columns: 1fr;}
-    }
-
-    .videoCard{
-      padding:14px;
-    }
-    .videoFrame{
-      position:relative;
-      width:100%;
-      aspect-ratio:16/9; /* mini horizontal */
-      border-radius:16px;
-      overflow:hidden;
-      background:#000;
-      border: 1px solid rgba(255,255,255,.10);
-    }
-    .videoFrame iframe{width:100%;height:100%;border:0}
-
-    .videoLabel{
-      margin:10px 2px 0;
-      font-weight:900;
-      font-size:14px;
-      letter-spacing:.2px;
-    }
-    .videoNote{
-      margin:6px 2px 0;
-      color:rgba(242,245,244,.80);
-      font-size:12.5px;
-    }
-
-    /* CTA + FORM */
-    .twoCols{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:14px;
-      padding:14px;
-      align-items:start;
-    }
-    @media(max-width:900px){
-      .twoCols{grid-template-columns:1fr;}
-    }
-
-    .btnRow{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:10px;
-      margin-top:10px;
-    }
-
-    .btn{
-      display:inline-flex;
-      justify-content:center;
-      align-items:center;
-      gap:10px;
-      width:100%;
-      padding:12px 14px;
-      border-radius:16px;
-      font-weight:900;
-      text-decoration:none;
-      border:1px solid rgba(255,255,255,.14);
-      cursor:pointer;
-      transition: transform .08s ease, filter .12s ease;
-      user-select:none;
-    }
-    .btn:hover{filter:brightness(1.03)}
-    .btn:active{transform:scale(.99)}
-    .btn.primary{
-      background:linear-gradient(135deg,#33d17a,#2bbf6f);
-      color:#08110c;
-      box-shadow:0 14px 40px rgba(51,209,122,.20);
-    }
-    .btn.secondary{
-      background:rgba(255,255,255,.08);
-      color:var(--text);
-    }
-
-    .disclaimer{
-      margin:10px 0 0;
-      font-size:10px;
-      color:rgba(255,255,255,.65);
-      line-height:1.35;
-    }
-
-    .infoCard,.formCard{padding:18px}
-    .note{margin:0 0 14px;color:var(--muted);font-size:13px;}
-    ul{padding-left:18px;margin:0 0 14px}
-    li{margin:8px 0;color:rgba(242,245,244,.88)}
-    h3{margin:0 0 10px}
-
-    label{font-size:12px;color:rgba(242,245,244,.88);display:block;margin:2px 0 6px}
-    input,textarea,select{
-      width:100%;
-      padding:12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.14);
-      background:rgba(0,0,0,.25);
-      color:var(--text);
-      outline:none;
-    }
-    textarea{min-height:96px;resize:vertical}
-    .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    @media(max-width:520px){ .row2{grid-template-columns:1fr} }
-
-    .submit{
-      margin-top:6px;
-      background:linear-gradient(135deg,#ffd166,#f0c04f);
-      color:#12100b;
-      font-weight:950;
-    }
-    .tiny{margin:10px 0 0;font-size:11px;color:var(--muted);}
-  </style>
+/* PARTICULAS */
+#particles{
+  position:fixed;
+  inset:0;
+  z-index:-1;
+}
+canvas{display:block}
+</style>
 </head>
 
 <body>
-  <div class="bg-logo" aria-hidden="true"></div>
-  <div class="bg-dim" aria-hidden="true"></div>
-  <canvas id="particles" aria-hidden="true"></canvas>
 
-  <div class="wrap">
-    <header>
-      <div class="brand">
-        <div class="logoMark" aria-hidden="true"></div>
-        <div>
-          <h1>GenArt</h1>
-          <p>No es normal sentirse mal, aquí les mostraré cómo nutrir su cuerpo.</p>
-        </div>
-      </div>
-    </header>
+<div id="particles"></div>
 
-    <main class="content">
+<div class="overlay">
 
-      <!-- ===== VIDEOS EN FILA ===== -->
-      <section class="card">
-        <div class="sectionTitle">
-          <h2>Videos</h2>
-        </div>
+  <h1>GenArt</h1>
+  <h2>No es normal sentirse mal.<br>
+  Aquí te mostramos cómo nutrir tu cuerpo y mejorar tu calidad de vida.</h2>
 
-        <div class="videoGrid">
-          <!-- Video 1 -->
-          <div class="card videoCard">
-            <div class="videoFrame">
-              <iframe
-                src="https://www.youtube.com/embed/qJKnNbNWYeE?rel=0&modestbranding=1"
-                title="Esto es la definición de Vital Health Global.."
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen>
-              </iframe>
-            </div>
-            <div class="videoLabel">Esto es la definición de Vital Health Global..</div>
-            <div class="videoNote">Míralo completo y luego llena el formulario para el siguiente paso.</div>
-          </div>
-
-          <!-- Video 2 -->
-          <div class="card videoCard">
-            <div class="videoFrame">
-              <iframe
-                src="https://www.youtube.com/embed/gXOn8bfBLnQ?start=65&rel=0&modestbranding=1"
-                title="Testimonios Reales De Los Productos"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen>
-              </iframe>
-            </div>
-            <div class="videoLabel">Testimonios Reales De Los Productos</div>
-            <div class="videoNote">Historias reales de personas que decidieron nutrir su cuerpo.</div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===== CTA + FORM ===== -->
-      <section class="card">
-        <div class="sectionTitle">
-          <h2>Da el siguiente paso</h2>
-        </div>
-
-        <div class="twoCols">
-          <div class="card infoCard">
-            <h3>¿Qué sigue después?</h3>
-            <ul>
-              <li>Me dices cómo te sientes hoy y tu meta principal.</li>
-              <li>Identificamos hábitos y áreas a fortalecer con nutrición consciente.</li>
-              <li>Te guío para tomar decisiones informadas (sin prometer curas).</li>
-            </ul>
-
-            <div class="btnRow">
-              <a href="#formulario" class="btn primary">👉 Llenar el formulario</a>
-
-              <a
-                class="btn secondary"
-                href="https://wa.me/19564421379?text=Hola%20Genesis%2C%20vi%20tu%20pagina%20GenArt%20y%20quiero%20dar%20el%20siguiente%20paso%20para%20nutrir%20mi%20cuerpo.%20%C2%BFMe%20orientas%3F"
-                target="_blank" rel="noopener"
-              >
-                💬 WhatsApp (Hablar contigo)
-              </a>
-
-              <a
-                class="btn secondary"
-                href="https://vitalhealthglobal.com/collections/all?refID=81951"
-                target="_blank" rel="noopener"
-              >
-                🛒 Compra aquí
-              </a>
-            </div>
-
-            <p class="disclaimer">
-              Contenido informativo y educativo. No diagnosticamos, no tratamos ni curamos enfermedades.
-              No reemplaza consultas médicas ni estudios clínicos. Resultados pueden variar.
-            </p>
-          </div>
-
-          <div class="card formCard" id="formulario">
-            <h3>Formulario de Bienestar</h3>
-            <p class="note">Al enviar, la información llega a tu correo (Formspree).</p>
-
-            <form action="https://formspree.io/f/xnneywra" method="POST">
-              <div class="row2">
-                <div>
-                  <label for="nombre">Nombre</label>
-                  <input id="nombre" name="nombre" type="text" placeholder="Tu nombre" required />
-                </div>
-                <div>
-                  <label for="whatsapp">WhatsApp</label>
-                  <input id="whatsapp" name="whatsapp" type="tel" placeholder="956-000-0000" required />
-                </div>
-              </div>
-
-              <div>
-                <label for="correo">Correo</label>
-                <input id="correo" name="correo" type="email" placeholder="tucorreo@email.com" required />
-              </div>
-
-              <div>
-                <label for="preocupacion">1) ¿Qué es lo que más te preocupa de tu salud hoy?</label>
-                <textarea id="preocupacion" name="preocupacion" required placeholder="Escribe aquí..."></textarea>
-              </div>
-
-              <div class="row2">
-                <div>
-                  <label for="energia">2) Nivel de energía diario (1–10)</label>
-                  <select id="energia" name="energia" required>
-                    <option value="" disabled selected>Selecciona</option>
-                    <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
-                    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
-                  </select>
-                </div>
-                <div>
-                  <label for="sintomas">3) ¿Qué sientes más seguido?</label>
-                  <select id="sintomas" name="sintomas" required>
-                    <option value="" disabled selected>Selecciona</option>
-                    <option>Cansancio</option>
-                    <option>Inflamación</option>
-                    <option>Estrés / ansiedad</option>
-                    <option>Dolor / tensión</option>
-                    <option>Falta de enfoque</option>
-                    <option>Otro</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label for="motivo">4) ¿Qué te motivó a llenar este formulario?</label>
-                <textarea id="motivo" name="motivo" required placeholder="Cuéntame en tus palabras..."></textarea>
-              </div>
-
-              <input type="hidden" name="_subject" value="Nuevo formulario GenArt - Bienestar" />
-
-              <button class="btn submit" type="submit">✅ Enviar y continuar</button>
-
-              <p class="tiny">
-                *Este formulario no es diagnóstico médico ni sustituye consulta profesional.
-              </p>
-            </form>
-          </div>
-        </div>
-      </section>
-
-    </main>
+  <div class="section">
+    <h3>Esto es la definición de Vital Health Global</h3>
+    <div class="video-box">
+      <iframe src="https://www.youtube.com/embed/qJKnNbNWYeE?rel=0"></iframe>
+    </div>
   </div>
 
-  <script>
-    // ===== Partículas (las que sí se ven) =====
-    (function(){
-      const canvas = document.getElementById("particles");
-      const ctx = canvas.getContext("2d");
+  <div class="section">
+    <h3>Testimonios Reales de los Productos</h3>
+    <div class="video-box">
+      <iframe src="https://www.youtube.com/embed/gXOn8bfBLnQ?start=65&rel=0"></iframe>
+    </div>
+  </div>
 
-      let w=0,h=0,dpr=Math.max(1,Math.min(2,window.devicePixelRatio||1));
-      const particles=[];
-      const NUM=120;     // visible sin ser demasiado pesado
-      const SPEED=0.45;
+  <div class="buttons">
+    <a class="btn whatsapp" href="https://wa.me/19564421379" target="_blank">
+      Escríbenos por WhatsApp
+    </a>
+    <a class="btn buy" href="https://vitalhealthglobal.com/collections/all?refID=81951" target="_blank">
+      Compra aquí
+    </a>
+  </div>
 
-      function resize(){
-        w=window.innerWidth; h=window.innerHeight;
-        canvas.width=Math.floor(w*dpr);
-        canvas.height=Math.floor(h*dpr);
-        canvas.style.width=w+"px";
-        canvas.style.height=h+"px";
-        ctx.setTransform(dpr,0,0,dpr,0,0);
-      }
-      function rand(min,max){return Math.random()*(max-min)+min;}
+  <form action="https://formspree.io/f/xnneywra" method="POST">
+    <input type="text" name="name" placeholder="Tu nombre" required>
+    <input type="email" name="email" placeholder="Tu correo electrónico" required>
+    <button type="submit">Quiero dar el siguiente paso</button>
+  </form>
 
-      function init(){
-        particles.length=0;
-        for(let i=0;i<NUM;i++){
-          particles.push({
-            x: rand(0,w), y: rand(0,h),
-            r: rand(1.0, 2.6),
-            vx: rand(-SPEED, SPEED),
-            vy: rand(-SPEED, SPEED),
-            a: rand(0.35, 0.95) // más brillo
-          });
-        }
-      }
+  <p class="disclaimer">
+    Este contenido no sustituye asesoramiento médico ni tratamientos clínicos.
+    No diagnosticamos ni curamos enfermedades.
+  </p>
 
-      function tick(){
-        ctx.clearRect(0,0,w,h);
+</div>
 
-        // dots
-        for(const p of particles){
-          p.x += p.vx;
-          p.y += p.vy;
+<!-- PARTICULAS SCRIPT -->
+<script>
+const canvas=document.createElement("canvas");
+document.getElementById("particles").appendChild(canvas);
+const ctx=canvas.getContext("2d");
+let w,h;
+function resize(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight}
+window.onresize=resize;resize();
 
-          if(p.x < -10) p.x = w + 10;
-          if(p.x > w + 10) p.x = -10;
-          if(p.y < -10) p.y = h + 10;
-          if(p.y > h + 10) p.y = -10;
+let particles=[];
+for(let i=0;i<120;i++){
+  particles.push({
+    x:Math.random()*w,
+    y:Math.random()*h,
+    r:Math.random()*2+1,
+    dx:(Math.random()-.5)*0.6,
+    dy:(Math.random()-.5)*0.6
+  })
+}
 
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
-          ctx.fillStyle = `rgba(190, 245, 255, ${p.a})`;
-          ctx.fill();
-        }
+function animate(){
+  ctx.clearRect(0,0,w,h);
+  particles.forEach(p=>{
+    p.x+=p.dx;p.y+=p.dy;
+    if(p.x<0||p.x>w)p.dx*=-1;
+    if(p.y<0||p.y>h)p.dy*=-1;
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle="rgba(0,255,255,.8)";
+    ctx.fill();
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
 
-        // lines
-        for(let i=0;i<particles.length;i++){
-          for(let j=i+1;j<particles.length;j++){
-            const a=particles[i], b=particles[j];
-            const dx=a.x-b.x, dy=a.y-b.y;
-            const dist=Math.sqrt(dx*dx + dy*dy);
-            if(dist < 140){
-              const alpha = (1 - dist/140) * 0.35; // más visible
-              ctx.strokeStyle = `rgba(120, 210, 255, ${alpha})`;
-              ctx.lineWidth = 1;
-              ctx.beginPath();
-              ctx.moveTo(a.x, a.y);
-              ctx.lineTo(b.x, b.y);
-              ctx.stroke();
-            }
-          }
-        }
-
-        requestAnimationFrame(tick);
-      }
-
-      window.addEventListener("resize", ()=>{ resize(); init(); });
-      resize(); init(); tick();
-    })();
-  </script>
 </body>
 </html>
