@@ -61,9 +61,9 @@
     }
 
     .wrap{
-      max-width:var(--maxW);
+      max-width: 100%;
       margin:0 auto;
-      padding: 14px 16px 64px;
+      padding: 14px 10px 64px;
       position:relative;
       z-index:1;
     }
@@ -129,14 +129,19 @@
 
     /* 2 videos en fila */
     .videoGrid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:14px;
-      padding:14px;
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      padding:14px 8px;
+      flex-wrap:wrap;
     }
-    @media(max-width:900px){ .videoGrid{grid-template-columns: 1fr;} }
+    @media(max-width:768px){ .videoGrid{justify-content:center; }
 
-    .videoCard{ padding:14px; }
+    .videoCard{ 
+              padding:12px;
+              width:320px
+              max-width:45vw}
     .videoFrame{
       position:relative;
       width:100%;
