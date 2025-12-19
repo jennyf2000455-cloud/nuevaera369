@@ -25,7 +25,7 @@
       overflow-x:hidden;
     }
 
-    /* Fondo en RAÍZ */
+    /* Fondo */
     .bg-logo{
       position:fixed;
       inset:0;
@@ -59,11 +59,10 @@
       opacity: 1;
     }
 
-    /* Layout general */
     .wrap{
       max-width: 100%;
       margin: 0 auto;
-      padding: 14px 10px 64px;
+      padding: 14px 10px 92px;
       position:relative;
       z-index:1;
     }
@@ -72,18 +71,20 @@
     .tabsBar{
       position: sticky;
       top: 0;
-      z-index: 5;
+      z-index: 50;
       padding: 10px 0 12px;
       backdrop-filter: blur(8px);
       background: linear-gradient(to bottom, rgba(0,0,0,.65), rgba(0,0,0,.25));
       border-bottom: 1px solid rgba(255,255,255,.10);
       margin-bottom: 14px;
+      overflow: visible;
     }
     .tabs{
       display:flex;
       gap:10px;
-      overflow:auto;
-      padding: 0 2px;
+      overflow-x:auto;
+      overflow-y:visible;
+      padding: 0 2px 10px;
       scroll-snap-type:x mandatory;
       align-items:center;
     }
@@ -104,24 +105,32 @@
     .tab:hover{filter:brightness(1.06)}
     .tab:active{transform:scale(.99)}
 
-    /* Dropdown en tabs */
+    /* Dropdown Learn */
     .tabDrop{ position: relative; display:inline-block; }
     .dropMenu{
       position:absolute;
       top: calc(100% + 10px);
       left:0;
-      min-width: 210px;
-      background: rgba(0,0,0,.92);
+      min-width: 240px;
+      background: rgba(0,0,0,.94);
       border: 1px solid rgba(255,255,255,.14);
       border-radius: 16px;
       padding: 8px;
       box-shadow: 0 18px 60px rgba(0,0,0,.6);
-      display:none;
-      z-index: 10;
+      transform: translateY(0) scale(.98);
+      transform-origin: top left;
+      opacity: 0;
+      pointer-events:none;
+      z-index: 999;
+    }
+    .tabDrop.open .dropMenu{
+      opacity: 1;
+      pointer-events:auto;
+      transform: translateY(0) scale(1);
     }
     .dropMenu a{
       display:block;
-      padding: 10px 10px;
+      padding: 11px 10px;
       border-radius: 12px;
       text-decoration:none;
       color: rgba(255,255,255,.92);
@@ -129,7 +138,6 @@
       font-size: 12.5px;
     }
     .dropMenu a:hover{ background: rgba(255,255,255,.08); }
-    .tabDrop.open .dropMenu{ display:block; }
 
     .card{
       background:var(--card);
@@ -138,25 +146,16 @@
       box-shadow:var(--shadow);
       overflow:hidden;
     }
-
     .sectionTitle{
       padding: 16px 18px;
       border-bottom: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.10);
     }
-    .sectionTitle h2{
-      margin:0;
-      font-size:16px;
-      letter-spacing:.2px;
-    }
+    .sectionTitle h2{ margin:0; font-size:16px; letter-spacing:.2px; }
 
-    .content{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:18px;
-    }
+    .content{ display:grid; grid-template-columns: 1fr; gap:18px; }
 
-    /* Videos + carrusel */
+    /* Videos base */
     .videoGrid{
       display:flex;
       justify-content:space-between;
@@ -183,10 +182,10 @@
     .videoLabel{ margin:10px 2px 0; font-weight:900; font-size:14px; letter-spacing:.2px; }
     .videoNote{ margin:6px 2px 0; color:rgba(242,245,244,.80); font-size:12.5px; }
 
-    /* ===== Carrusel entre videos ===== */
-    .carouselCard{
-      padding: 12px;
-      width: 360px;
+    /* ====== 3D CAROUSEL ====== */
+    .carousel3dCard{
+      padding: 12px 12px 16px;
+      width: 380px;
       max-width: 45vw;
     }
     .carouselTitle{
@@ -195,45 +194,119 @@
       font-size: 14px;
       letter-spacing:.2px;
     }
-    .carouselTrack{
-      display: grid;
-      grid-auto-flow: column;
-      grid-auto-columns: 120px;
-      gap: 10px;
-      overflow-x: auto;
-      padding-bottom: 6px;
-      scroll-snap-type: x mandatory;
-    }
-    .thumb{
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(0,0,0,.18);
-      border-radius: 14px;
-      padding: 0;
-      overflow: hidden;
-      cursor: pointer;
-      scroll-snap-align: start;
-      height: 120px;
-      display:block;
-    }
-    .thumb img{
+    .c3dShell{
+      position: relative;
       width: 100%;
-      height: 120px;
+      height: 320px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(240px 220px at 30% 30%, rgba(255,255,255,.08), transparent 60%),
+        radial-gradient(260px 260px at 70% 60%, rgba(120,210,255,.10), transparent 62%),
+        rgba(0,0,0,.18);
+      overflow: hidden;
+    }
+    .c3dHint{
+      margin: 10px 2px 0;
+      font-size: 12px;
+      color: rgba(242,245,244,.78);
+    }
+    .c3dScene{
+      position:absolute;
+      inset:0;
+      perspective: 1200px;
+      display:grid;
+      place-items:center;
+      user-select:none;
+      touch-action: pan-y;
+    }
+    .c3dRing{
+      position: relative;
+      width: 260px;
+      height: 260px;
+      transform-style: preserve-3d;
+      will-change: transform;
+    }
+    .c3dItem{
+      position:absolute;
+      top:50%;
+      left:50%;
+      width: 170px;
+      height: 170px;
+      transform-style: preserve-3d;
+      transform: translate(-50%,-50%);
+      border-radius: 18px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow:
+        0 18px 45px rgba(0,0,0,.55),
+        0 0 0 1px rgba(255,255,255,.06) inset;
+      cursor:pointer;
+      background:#000;
+    }
+    .c3dItem img{
+      width:100%;
+      height:100%;
       object-fit: cover;
       display:block;
+      transform: translateZ(1px);
     }
+    /* subtle lighting + shadows */
+    .c3dItem::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.28), transparent 35%),
+        radial-gradient(220px 220px at 80% 15%, rgba(255,255,255,.22), transparent 55%),
+        linear-gradient(0deg, rgba(0,0,0,.30), transparent 55%);
+      mix-blend-mode: screen;
+      opacity:.55;
+      pointer-events:none;
+    }
+    .c3dItem::after{
+      content:"";
+      position:absolute;
+      inset:-22px;
+      background: radial-gradient(circle at 50% 120%, rgba(0,0,0,.55), transparent 60%);
+      transform: translateZ(-1px);
+      opacity:.55;
+      pointer-events:none;
+    }
+    .c3dControls{
+      position:absolute;
+      left:12px;
+      right:12px;
+      bottom:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      pointer-events:none;
+    }
+    .c3dBtn{
+      pointer-events:auto;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.30);
+      color:#fff;
+      padding: 8px 10px;
+      border-radius: 14px;
+      font-weight: 900;
+      cursor:pointer;
+      backdrop-filter: blur(8px);
+    }
+    .c3dBtn:active{ transform: scale(.99); }
 
-    /* Desktop: 3 columnas (video - carrusel - video) */
+    /* Desktop 3 columnas */
     @media (min-width: 900px){
       .videoGrid{
         display: grid !important;
-        grid-template-columns: 1fr 380px 1fr;
+        grid-template-columns: 1fr 400px 1fr;
         align-items: start;
+        gap: 16px;
       }
       .videoCard{ width: 100% !important; max-width: none !important; }
-      .carouselCard{ width: 100% !important; max-width: none !important; }
+      .carousel3dCard{ width: 100% !important; max-width: none !important; }
     }
-
-    /* Mobile: NO apilar, swipe horizontal */
+    /* Mobile swipe section */
     @media (max-width: 899px){
       .videoGrid{
         display: flex !important;
@@ -244,11 +317,14 @@
         flex-wrap: nowrap;
       }
       .videoGrid > .videoCard,
-      .videoGrid > .carouselCard{
+      .videoGrid > .carousel3dCard{
         flex: 0 0 86vw;
         max-width: 86vw;
         scroll-snap-align: center;
       }
+      .c3dShell{ height: 300px; }
+      .c3dRing{ width: 240px; height: 240px; }
+      .c3dItem{ width: 160px; height: 160px; }
     }
 
     /* CTA + FORM */
@@ -322,11 +398,8 @@
     }
     .tiny{margin:10px 0 0;font-size:11px;color:var(--muted);}
 
-    /* About Us dropdown section */
-    .aboutWrap{
-      padding: 14px;
-      display:none;
-    }
+    /* About Us section */
+    .aboutWrap{ padding: 14px; display:none; }
     .aboutWrap.open{ display:block; }
     .aboutBox{
       padding: 14px;
@@ -343,13 +416,8 @@
       line-height: 1.35;
     }
 
-    /* ===== Sección IA ===== */
-    .aiWrap{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:14px;
-      padding:14px;
-    }
+    /* IA section */
+    .aiWrap{ display:grid; grid-template-columns:1fr; gap:14px; padding:14px; }
     .aiInfo{
       padding:14px;
       border:1px solid rgba(255,255,255,.10);
@@ -357,18 +425,22 @@
       border-radius: 18px;
     }
 
-    /* ===== MODAL POP-OUT IA ===== */
+    /* ===== MODALS (fade-in elegante) ===== */
     .modal{
       position:fixed;
       inset:0;
       display:none;
       align-items:center;
       justify-content:center;
-      background: rgba(0,0,0,.78);
+      background: rgba(0,0,0,.0);
       z-index: 9999;
       padding: 16px;
+      transition: background .22s ease;
     }
-    .modal.open{ display:flex; }
+    .modal.open{
+      display:flex;
+      background: rgba(0,0,0,.78);
+    }
 
     .modalBox{
       width: min(1060px, 95vw);
@@ -383,7 +455,16 @@
       position:relative;
       display:flex;
       flex-direction:column;
+
+      opacity: 0;
+      transform: translateY(12px) scale(.985);
+      transition: opacity .22s ease, transform .22s ease;
     }
+    .modal.open .modalBox{
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
     .modalTop{
       display:flex;
       align-items:center;
@@ -393,17 +474,8 @@
       border-bottom: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.18);
     }
-    .modalTitle{
-      font-weight: 950;
-      font-size: 13px;
-      color: rgba(255,255,255,.92);
-      letter-spacing:.2px;
-    }
-    .modalActions{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
+    .modalTitle{ font-weight:950; font-size:13px; color:rgba(255,255,255,.92); letter-spacing:.2px; }
+    .modalActions{ display:flex; gap:10px; align-items:center; }
     .modalBtn{
       border:1px solid rgba(255,255,255,.14);
       background: rgba(255,255,255,.10);
@@ -422,7 +494,23 @@
     .modalFrame{ flex:1; background:#000; min-height:0; }
     .modalFrame iframe{ width:100%; height:100%; border:0; display:block; }
 
-    /* ===== MOBILE: POP-OUT FULL SCREEN + SAFE AREA ===== */
+    /* Modal pequeño (para Spotify) */
+    .modalBox.small{
+      width: min(520px, 95vw);
+      height: auto;
+      max-height: 92dvh;
+    }
+    .modalBox.small .modalFrame{ background: transparent; }
+    .spotifyWrap{
+      padding: 14px;
+    }
+    .spotifyNote{
+      margin: 10px 2px 0;
+      font-size: 12px;
+      color: rgba(255,255,255,.72);
+      line-height: 1.35;
+    }
+
     @media (max-width: 520px){
       .modal{
         padding: 0 !important;
@@ -435,6 +523,11 @@
         border-radius: 0 !important;
         outline: none !important;
         background: rgba(0,0,0,.98) !important;
+      }
+      .modalBox.small{
+        width: 100vw !important;
+        height: 100dvh !important;
+        border-radius: 0 !important;
       }
       .modalTop{
         position: sticky;
@@ -479,7 +572,32 @@
     }
     .iconBtn svg{ width:22px; height:22px; fill: rgba(255,255,255,.92); }
 
-    /* ===== Bot flotante (FAB) ===== */
+    /* CEO & Founders (2 imágenes) */
+    .ceoBlock{
+      margin: 14px auto 0;
+      max-width: 560px;
+      padding: 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+    }
+    .ceoTitle{
+      font-weight: 950;
+      letter-spacing:.2px;
+      font-size: 13px;
+      margin: 0 0 10px;
+      color: rgba(255,255,255,.92);
+    }
+    .ceoImg{
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 16px 50px rgba(0,0,0,.55);
+      display:block;
+      object-fit: cover;
+    }
+
+    /* Bot flotante AI (derecha) */
     .fab-ai{
       position: fixed;
       right: 18px;
@@ -499,7 +617,6 @@
     }
     .fab-ai:hover{ filter: brightness(1.06); }
     .fab-ai:active{ transform: scale(.98); }
-
     .fab-ai img{
       width: 46px;
       height: 46px;
@@ -509,7 +626,6 @@
       object-fit: cover;
       display:block;
     }
-
     .fab-ai::before{
       content:"";
       position:absolute;
@@ -524,8 +640,40 @@
       100%{ transform: scale(.92); opacity: .15; }
     }
 
+    /* Botón flotante Música (izquierda) */
+    .fab-music{
+      position: fixed;
+      left: 18px;
+      bottom: 18px;
+      z-index: 10000;
+      height: 46px;
+      padding: 0 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.35);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color:#fff;
+      font-weight: 950;
+      letter-spacing:.2px;
+    }
+    .fab-music:hover{ filter: brightness(1.06); }
+    .fab-music:active{ transform: scale(.98); }
+    .fab-dot{
+      width: 10px; height: 10px; border-radius: 999px;
+      background: rgba(120,210,255,.9);
+      box-shadow: 0 0 0 6px rgba(120,210,255,.14);
+    }
+
     @media (max-width:520px){
       .fab-ai{ right: 14px; bottom: 14px; }
+      .fab-music{ left: 14px; bottom: 14px; }
+      .ceoBlock{ max-width: 92vw; }
     }
   </style>
 </head>
@@ -536,17 +684,14 @@
   <canvas id="particles" aria-hidden="true"></canvas>
 
   <div class="wrap">
-
     <!-- TABS -->
     <div class="tabsBar" role="navigation" aria-label="Menú">
       <div class="tabs">
         <a class="tab" href="https://vitalhealthglobal.com/collections/all?refID=81951" target="_blank" rel="noopener">Shop Now</a>
 
-        <!-- Learn dropdown -->
         <div class="tabDrop" id="learnDrop">
           <button class="tab" type="button" aria-haspopup="true" aria-expanded="false">Learn More ▾</button>
           <div class="dropMenu" role="menu" aria-label="Learn More">
-            <a href="#learn" role="menuitem">Guía</a>
             <a href="#about" role="menuitem" id="openAbout">About Us</a>
           </div>
         </div>
@@ -558,12 +703,9 @@
     </div>
 
     <main class="content">
-
-      <!-- VIDEOS -->
+      <!-- VIDEOS + 3D CAROUSEL -->
       <section class="card" id="videos">
-        <div class="sectionTitle">
-          <h2>Videos</h2>
-        </div>
+        <div class="sectionTitle"><h2>Videos</h2></div>
 
         <div class="videoGrid">
           <!-- VIDEO 1 -->
@@ -579,42 +721,22 @@
             <div class="videoNote">Míralo completo y luego llena el formulario para el siguiente paso.</div>
           </div>
 
-          <!-- CARRUSEL EN MEDIO -->
-          <div class="card carouselCard" id="products">
-            <div class="carouselTitle">Productos</div>
-            <div class="carouselTrack" aria-label="Carrusel de productos">
-              <button class="thumb" type="button" data-img="d-fenz.png"><img src="d-fenz.png" alt="D-Fenz"></button>
-              <button class="thumb" type="button" data-img="genius-shake.png"><img src="genius-shake.png" alt="Genius Shake"></button>
-              <button class="thumb" type="button" data-img="glutation-plus.jpg"><img src="glutation-plus.jpg" alt="Glutation Plus"></button>
-              <button class="thumb" type="button" data-img="ketokafe.jpg"><img src="ketokafe.jpg" alt="Ketokafe"></button>
-              <button class="thumb" type="button" data-img="lattekaffe.png"><img src="lattekaffe.png" alt="Lattekafe"></button>
-              <button class="thumb" type="button" data-img="lovkafe.jpg"><img src="lovkafe.jpg" alt="Lovkafe"></button>
-              <button class="thumb" type="button" data-img="neurokafe.jpg"><img src="neurokafe.jpg" alt="Neurokafe"></button>
-              <button class="thumb" type="button" data-img="nourish.png"><img src="nourish.png" alt="Nourish"></button>
-              <button class="thumb" type="button" data-img="performance.png"><img src="performance.png" alt="Performance"></button>
-              <button class="thumb" type="button" data-img="sblance.png"><img src="sblance.png" alt="S-Balance"></button>
-              <button class="thumb" type="button" data-img="smart-biotics.png"><img src="smart-biotics.png" alt="Smart Biotics"></button>
+          <!-- 3D CAROUSEL -->
+          <div class="card carousel3dCard" id="products">
+            <div class="carouselTitle">Productos (3D)</div>
 
-              <button class="thumb" type="button" data-img="v-control.jpg"><img src="v-control.jpg" alt="V-Control"></button>
-              <button class="thumb" type="button" data-img="v-curcumax.jpg"><img src="v-curcumax.jpg" alt="V-Curcumax"></button>
-              <button class="thumb" type="button" data-img="v-fortyflora.jpg"><img src="v-fortyflora.jpg" alt="V-Fortyflora"></button>
-              <button class="thumb" type="button" data-img="v-glucalose.jpg"><img src="v-glucalose.jpg" alt="V-Glucalose"></button>
-              <button class="thumb" type="button" data-img="v-itadol.jpg"><img src="v-itadol.jpg" alt="V-Itadol"></button>
-              <button class="thumb" type="button" data-img="v-nitro.jpg"><img src="v-nitro.jpg" alt="V-Nitro"></button>
-              <button class="thumb" type="button" data-img="v-nrgy.jpg"><img src="v-nrgy.jpg" alt="V-Nrgy"></button>
-              <button class="thumb" type="button" data-img="v-organex.jpg"><img src="v-organex.jpg" alt="V-Organex"></button>
-              <button class="thumb" type="button" data-img="v-tedetox.jpg"><img src="v-tedetox.jpg" alt="V-TeDetox"></button>
-              <button class="thumb" type="button" data-img="vasculas.jpg"><img src="vasculas.jpg" alt="V-Asculas"></button>
-              <button class="thumb" type="button" data-img="vdaily.jpg"><img src="vdaily.jpg" alt="VDaily"></button>
-              <button class="thumb" type="button" data-img="vglutation.jpg"><img src="vglutation.jpg" alt="V-Glutation"></button>
-              <button class="thumb" type="button" data-img="vitalage-collagen.jpg"><img src="vitalage-collagen.jpg" alt="Vitalage Collagen"></button>
-              <button class="thumb" type="button" data-img="vitalay.jpg"><img src="vitalay.jpg" alt="Vitalay"></button>
-              <button class="thumb" type="button" data-img="vitalboost.jpg"><img src="vitalboost.jpg" alt="Vitalboost"></button>
-              <button class="thumb" type="button" data-img="vitalpro.jpg"><img src="vitalpro.jpg" alt="Vitalpro"></button>
-              <button class="thumb" type="button" data-img="vitaren.jpg"><img src="vitaren.jpg" alt="V-Itaren"></button>
-              <button class="thumb" type="button" data-img="vomega.jpg"><img src="vomega.jpg" alt="V-Omega"></button>
+            <div class="c3dShell">
+              <div class="c3dScene" id="c3dScene">
+                <div class="c3dRing" id="c3dRing" aria-label="Carrusel 3D de productos"></div>
+              </div>
+
+              <div class="c3dControls">
+                <button class="c3dBtn" type="button" id="c3dPrev">◀</button>
+                <button class="c3dBtn" type="button" id="c3dNext">▶</button>
+              </div>
             </div>
-            <div class="videoNote">Toca una foto para verla grande.</div>
+
+            <div class="c3dHint">Arrastra para girar. Toca una foto para verla grande.</div>
           </div>
 
           <!-- VIDEO 2 -->
@@ -634,35 +756,25 @@
 
       <!-- IA INFO -->
       <section class="card" id="ai">
-        <div class="sectionTitle">
-          <h2>Canal de Educación IA</h2>
-        </div>
-
+        <div class="sectionTitle"><h2>Canal de Educación IA</h2></div>
         <div class="aiWrap">
           <div class="aiInfo">
             <h3 style="margin:0 0 10px;">Vital Health AI</h3>
-            <p class="note" style="margin:0 0 10px;">
-              Para abrir el chat, toca el bot flotante 🤖 (abajo a la derecha).
-            </p>
+            <p class="note" style="margin:0 0 10px;">Para abrir el chat, toca el bot flotante 🤖 (abajo a la derecha).</p>
             <ul>
               <li>Escribe tu meta: energía, estrés, digestión, sueño, control de peso, etc.</li>
               <li>Describe cómo te sientes (sin datos sensibles).</li>
               <li>Si quieres un plan, llena el formulario al final.</li>
             </ul>
-            <p class="disclaimer" style="margin:0;">
-              Esta IA es informativa. No diagnostica, no trata ni cura enfermedades. No reemplaza atención médica.
-            </p>
+            <p class="disclaimer" style="margin:0;">Esta IA es informativa. No diagnostica, no trata ni cura enfermedades. No reemplaza atención médica.</p>
           </div>
         </div>
       </section>
 
-      <!-- LEARN + FORM -->
+      <!-- ABOUT + FORM -->
       <section class="card" id="learn">
-        <div class="sectionTitle">
-          <h2>Da el siguiente paso</h2>
-        </div>
+        <div class="sectionTitle"><h2>Da el siguiente paso</h2></div>
 
-        <!-- About Us dropdown content -->
         <div class="aboutWrap" id="about">
           <div class="aboutBox">
             <h3>About Us</h3>
@@ -682,7 +794,6 @@
           <div class="card infoCard">
             <h3>No es normal sentirse mal</h3>
             <p class="note">Aquí les mostraré cómo nutrir su cuerpo y mejorar su calidad de vida.</p>
-
             <ul>
               <li>Me dices cómo te sientes hoy y tu meta principal.</li>
               <li>Identificamos hábitos y áreas a fortalecer con nutrición consciente.</li>
@@ -694,15 +805,11 @@
 
               <a class="btn secondary"
                  href="https://wa.me/19564421379?text=Hola%20Genesis%2C%20vi%20tu%20pagina%20GenArt%20y%20quiero%20dar%20el%20siguiente%20paso%20para%20nutrir%20mi%20cuerpo.%20%C2%BFMe%20orientas%3F"
-                 target="_blank" rel="noopener">
-                💬 WhatsApp (Hablar contigo)
-              </a>
+                 target="_blank" rel="noopener">💬 WhatsApp (Hablar contigo)</a>
 
               <a class="btn secondary"
                  href="https://vitalhealthglobal.com/collections/all?refID=81951"
-                 target="_blank" rel="noopener">
-                🛒 Compra aquí
-              </a>
+                 target="_blank" rel="noopener">🛒 Compra aquí</a>
             </div>
 
             <p class="disclaimer">
@@ -768,15 +875,13 @@
               <input type="hidden" name="_subject" value="Nuevo formulario GenArt - Bienestar" />
               <button class="btn submit" type="submit">✅ Enviar y continuar</button>
 
-              <p class="tiny">
-                *Este formulario no es diagnóstico médico ni sustituye consulta profesional.
-              </p>
+              <p class="tiny">*Este formulario no es diagnóstico médico ni sustituye consulta profesional.</p>
             </form>
           </div>
         </div>
       </section>
 
-      <!-- Social Footer -->
+      <!-- Social Footer + CEO (2 imágenes) -->
       <section class="card" id="social">
         <div class="sectionTitle"><h2>Sígueme</h2></div>
         <footer>
@@ -788,6 +893,14 @@
               <svg viewBox="0 0 24 24"><path d="M21.6 7.2s-.2-1.6-.8-2.3c-.8-.8-1.7-.8-2.1-.9C15.9 3.7 12 3.7 12 3.7h0s-3.9 0-6.7.3c-.4.1-1.3.1-2.1.9-.6.7-.8 2.3-.8 2.3S2.1 9 2.1 10.7v1.6c0 1.7.3 3.5.3 3.5s.2 1.6.8 2.3c.8.8 1.9.8 2.4.9 1.7.2 6.4.3 6.4.3s3.9 0 6.7-.3c.4-.1 1.3-.1 2.1-.9.6-.7.8-2.3.8-2.3s.3-1.8.3-3.5v-1.6c0-1.7-.3-3.5-.3-3.5zM10.3 14.8V8.9l5.2 3-5.2 2.9z"/></svg>
             </a>
           </div>
+
+          <!-- CEO & Founders (2 imágenes en orden) -->
+          <div class="ceoBlock">
+            <div class="ceoTitle">CEO &amp; Founders</div>
+            <img class="ceoImg" src="art-ceo.png" alt="Art CEO">
+            <img class="ceoImg" src="ceo.png" alt="CEO & Founders" style="margin-top:12px">
+          </div>
+
           <p class="disclaimer" style="margin-top:12px;">
             Contenido informativo y educativo. No diagnosticamos, no tratamos ni curamos enfermedades. No reemplaza consultas médicas.
           </p>
@@ -809,19 +922,14 @@
           <button class="modalBtn" id="closeAI" type="button">Close ✕</button>
         </div>
       </div>
-
       <div class="modalFrame">
-        <iframe
-          id="aiIframe"
-          src=""
-          title="Vital Health AI Chat"
-          loading="lazy"
+        <iframe id="aiIframe" src="" title="Vital Health AI Chat" loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
   </div>
 
-  <!-- MODAL PARA IMAGENES (POPOUT) -->
+  <!-- MODAL PARA IMAGENES -->
   <div class="modal" id="imgModal" aria-hidden="true">
     <div class="modalBox" role="dialog" aria-modal="true" aria-label="Producto">
       <div class="modalTop">
@@ -836,49 +944,78 @@
     </div>
   </div>
 
+  <!-- MODAL SPOTIFY (fade-in elegante) -->
+  <div class="modal" id="musicModal" aria-hidden="true">
+    <div class="modalBox small" role="dialog" aria-modal="true" aria-label="Música">
+      <div class="modalTop">
+        <div class="modalTitle">Música (Spotify)</div>
+        <div class="modalActions">
+          <a class="modalBtn" href="https://open.spotify.com/track/75ra3ykjjDGpLardaFmZBV" target="_blank" rel="noopener">Open</a>
+          <button class="modalBtn" id="closeMusic" type="button">Close ✕</button>
+        </div>
+      </div>
+      <div class="spotifyWrap">
+        <iframe
+          style="border-radius:12px"
+          src="https://open.spotify.com/embed/track/75ra3ykjjDGpLardaFmZBV?utm_source=generator"
+          width="100%"
+          height="152"
+          frameborder="0"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"></iframe>
+
+        <div class="spotifyNote">
+          Presiona <b>Play</b> para activar la música. (Los celulares bloquean autoplay automático.)
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Bot flotante AI -->
   <button class="fab-ai" id="fabAI" type="button" aria-label="Abrir Vital Health AI">
     <img src="vh-bot.png" alt="Vital Health AI" />
   </button>
 
+  <!-- Botón flotante Música -->
+  <button class="fab-music" id="fabMusic" type="button" aria-label="Abrir música">
+    <span class="fab-dot" aria-hidden="true"></span>
+    Música
+  </button>
+
   <script>
-    // ===== Dropdown Learn More =====
+    // Learn dropdown (arreglado + pop-out completo)
     (function(){
       const drop = document.getElementById("learnDrop");
       if(!drop) return;
       const btn = drop.querySelector("button.tab");
-      const menu = drop.querySelector(".dropMenu");
-      const about = document.getElementById("about");
+      const aboutWrap = document.getElementById("about");
       const openAbout = document.getElementById("openAbout");
 
       function close(){
         drop.classList.remove("open");
         btn.setAttribute("aria-expanded","false");
       }
-      function open(){
-        drop.classList.add("open");
-        btn.setAttribute("aria-expanded","true");
+      function toggle(){
+        const isOpen = drop.classList.toggle("open");
+        btn.setAttribute("aria-expanded", String(isOpen));
       }
 
-      btn.addEventListener("click", (e)=>{
-        e.preventDefault();
-        drop.classList.contains("open") ? close() : open();
-      });
+      btn.addEventListener("click", (e)=>{ e.preventDefault(); e.stopPropagation(); toggle(); });
 
-      openAbout.addEventListener("click", ()=>{
+      openAbout.addEventListener("click", (e)=>{
+        e.preventDefault();
         close();
-        if(about){
-          about.classList.add("open");
-          setTimeout(()=>{ about.scrollIntoView({behavior:"smooth", block:"start"}); }, 60);
+        if(aboutWrap){
+          aboutWrap.classList.add("open");
+          setTimeout(()=>{ aboutWrap.scrollIntoView({behavior:"smooth", block:"start"}); }, 60);
         }
       });
 
-      document.addEventListener("click",(e)=>{
-        if(!drop.contains(e.target)) close();
-      });
+      document.addEventListener("click", ()=> close());
+      window.addEventListener("keydown", (e)=>{ if(e.key==="Escape") close(); });
     })();
 
-    // ===== Modal IA (abre/cierra) =====
+    // Modal IA
     (function(){
       const modal = document.getElementById("aiModal");
       const closeBtn = document.getElementById("closeAI");
@@ -902,33 +1039,22 @@
 
       fabBtn.addEventListener("click", openModal);
       closeBtn.addEventListener("click", closeModal);
-
-      modal.addEventListener("click", (e)=>{
-        if(e.target === modal) closeModal();
-      });
-
-      window.addEventListener("keydown", (e)=>{
-        if(!modal.classList.contains("open")) return;
-        if(e.key === "Escape") closeModal();
-      });
+      modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
+      window.addEventListener("keydown", (e)=>{ if(modal.classList.contains("open") && e.key==="Escape") closeModal(); });
     })();
 
-    // ===== Lightbox para carrusel =====
+    // Modal imágenes
     (function(){
       const modal = document.getElementById("imgModal");
       const bigImg = document.getElementById("bigImg");
       const close = document.getElementById("closeImg");
 
-      document.addEventListener("click", (e)=>{
-        const btn = e.target.closest(".thumb");
-        if(!btn) return;
-        const src = btn.getAttribute("data-img");
+      function openImg(src){
         bigImg.src = src;
         modal.classList.add("open");
         modal.setAttribute("aria-hidden","false");
         document.body.style.overflow = "hidden";
-      });
-
+      }
       function closeIt(){
         modal.classList.remove("open");
         modal.setAttribute("aria-hidden","true");
@@ -939,9 +1065,120 @@
       close.addEventListener("click", closeIt);
       modal.addEventListener("click",(e)=>{ if(e.target===modal) closeIt(); });
       window.addEventListener("keydown",(e)=>{ if(e.key==="Escape" && modal.classList.contains("open")) closeIt(); });
+
+      window.__openProductImg = openImg;
     })();
 
-    // ===== Partículas =====
+    // Modal Música (Spotify) + fade-in elegante (CSS)
+    (function(){
+      const modal = document.getElementById("musicModal");
+      const openBtn = document.getElementById("fabMusic");
+      const closeBtn = document.getElementById("closeMusic");
+
+      function open(){
+        modal.classList.add("open");
+        modal.setAttribute("aria-hidden","false");
+        document.body.style.overflow = "hidden";
+      }
+      function close(){
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden","true");
+        document.body.style.overflow = "";
+      }
+
+      openBtn.addEventListener("click", open);
+      closeBtn.addEventListener("click", close);
+      modal.addEventListener("click", (e)=>{ if(e.target === modal) close(); });
+      window.addEventListener("keydown", (e)=>{ if(modal.classList.contains("open") && e.key==="Escape") close(); });
+    })();
+
+    // 3D Carousel (incluido)
+    (function(){
+      const ring = document.getElementById("c3dRing");
+      const prev = document.getElementById("c3dPrev");
+      const next = document.getElementById("c3dNext");
+      const scene = document.getElementById("c3dScene");
+      if(!ring || !scene) return;
+
+      const images = [
+        "d-fenz.png","genius-shake.png","glutation-plus.jpg","ketokafe.jpg","lattekaffe.png",
+        "lovkafe.jpg","neurokafe.jpg","nourish.png","performance.png","sblance.png","smart-biotics.png",
+        "v-control.jpg","v-curcumax.jpg","v-fortyflora.jpg","v-glucalose.jpg","v-itadol.jpg","v-nitro.jpg",
+        "v-nrgy.jpg","v-organex.jpg","v-tedetox.jpg","vasculas.jpg","vdaily.jpg","vglutation.jpg",
+        "vitalage-collagen.jpg","vitalay.jpg","vitalboost.jpg","vitalpro.jpg","vitaren.jpg","vomega.jpg"
+      ];
+
+      ring.innerHTML = images.map((src, i) => `
+        <div class="c3dItem" data-src="${src.replace(/"/g,"&quot;")}" aria-label="Producto ${i+1}">
+          <img src="${src.replace(/"/g,"&quot;")}" alt="${src.replace(/"/g,"&quot;")}">
+        </div>
+      `).join("");
+
+      const items = Array.from(ring.querySelectorAll(".c3dItem"));
+      const N = items.length;
+
+      function computeRadius(){ return Math.max(260, Math.min(460, N * 14)); }
+      let radius = computeRadius();
+      let rotY = 0;
+      let auto = true;
+      let autoId = null;
+
+      function layout(){
+        radius = computeRadius();
+        const step = 360 / N;
+        items.forEach((el, idx)=>{
+          const a = step * idx;
+          el.style.transform = `translate(-50%,-50%) rotateY(${a}deg) translateZ(${radius}px)`;
+        });
+      }
+      function render(){ ring.style.transform = `rotateY(${rotY}deg)`; }
+
+      function spin(dir){
+        auto = false;
+        rotY += dir * (360 / N);
+        render();
+        setTimeout(()=>{ auto = true; }, 1200);
+      }
+      prev?.addEventListener("click", ()=> spin(+1));
+      next?.addEventListener("click", ()=> spin(-1));
+
+      ring.addEventListener("click", (e)=>{
+        const item = e.target.closest(".c3dItem");
+        if(!item) return;
+        const src = item.getAttribute("data-src");
+        if(window.__openProductImg) window.__openProductImg(src);
+      });
+
+      let dragging=false, startX=0, startRot=0;
+      function onDown(x){ dragging=true; startX=x; startRot=rotY; auto=false; if(autoId) cancelAnimationFrame(autoId); }
+      function onMove(x){ if(!dragging) return; const dx = x - startX; rotY = startRot + dx * 0.35; render(); }
+      function onUp(){
+        if(!dragging) return;
+        dragging=false;
+        const step = 360 / N;
+        rotY = Math.round(rotY / step) * step;
+        render();
+        setTimeout(()=>{ auto=true; }, 900);
+      }
+
+      scene.addEventListener("mousedown",(e)=> onDown(e.clientX));
+      window.addEventListener("mousemove",(e)=> onMove(e.clientX));
+      window.addEventListener("mouseup", onUp);
+
+      scene.addEventListener("touchstart",(e)=> onDown(e.touches[0].clientX), {passive:true});
+      scene.addEventListener("touchmove",(e)=> onMove(e.touches[0].clientX), {passive:true});
+      scene.addEventListener("touchend", onUp);
+
+      function loop(){
+        if(auto){ rotY -= 0.12; render(); }
+        autoId = requestAnimationFrame(loop);
+      }
+
+      window.addEventListener("resize", ()=>{ layout(); render(); });
+      layout(); render(); loop();
+    })();
+
+    // Partículas (incluidas)
     (function(){
       const canvas = document.getElementById("particles");
       const ctx = canvas.getContext("2d");
@@ -964,13 +1201,8 @@
       function init(){
         particles.length=0;
         for(let i=0;i<NUM;i++){
-          particles.push({
-            x: rand(0,w), y: rand(0,h),
-            r: rand(1.0, 2.8),
-            vx: rand(-SPEED, SPEED),
-            vy: rand(-SPEED, SPEED),
-            a: rand(0.35, 0.95)
-          });
+          particles.push({ x: rand(0,w), y: rand(0,h), r: rand(1.0, 2.8),
+            vx: rand(-SPEED, SPEED), vy: rand(-SPEED, SPEED), a: rand(0.35, 0.95) });
         }
       }
 
@@ -978,9 +1210,7 @@
         ctx.clearRect(0,0,w,h);
 
         for(const p of particles){
-          p.x += p.vx;
-          p.y += p.vy;
-
+          p.x += p.vx; p.y += p.vy;
           if(p.x < -10) p.x = w + 10;
           if(p.x > w + 10) p.x = -10;
           if(p.y < -10) p.y = h + 10;
