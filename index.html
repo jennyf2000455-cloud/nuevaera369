@@ -1,252 +1,1250 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NuevaEra369</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>GenArt | Bienestar</title>
 
-  <!-- GLOBAL STYLES -->
   <style>
-    /* RESET */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    :root{
+      --bg:#0b0f0e;
+      --card:rgba(255,255,255,.06);
+      --text:#f2f5f4;
+      --muted:rgba(242,245,244,.75);
+      --border:rgba(255,255,255,.12);
+      --shadow:0 18px 60px rgba(0,0,0,.45);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      color:var(--text);
+      line-height:1.35;
+      background: var(--bg);
+      overflow-x:hidden;
     }
 
-    html {
-      scroll-behavior: smooth;
-      scroll-padding-top: 120px;
+    /* Fondo */
+    .bg-logo{
+      position:fixed;
+      inset:0;
+      z-index:-4;
+      background:
+        radial-gradient(1200px 800px at 20% 10%, rgba(51,209,122,.18), transparent 55%),
+        radial-gradient(900px 700px at 85% 25%, rgba(255,209,102,.14), transparent 60%),
+        url("genart-bg.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat:no-repeat;
+      filter: saturate(1.05) contrast(1.05);
+      transform: scale(1.02);
+    }
+    .bg-dim{
+      position:fixed;
+      inset:0;
+      z-index:-3;
+      background: rgba(0,0,0,.62);
+      backdrop-filter: blur(2px);
     }
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: #0b0f14;
-      color: #ffffff;
-      line-height: 1.6;
+    /* Partículas */
+    #particles{
+      position:fixed;
+      inset:0;
+      z-index:-2;
+      width:100%;
+      height:100%;
+      pointer-events:none;
+      opacity: 1;
     }
 
-    a {
-      color: #7dd3fc;
-      text-decoration: none;
+    .wrap{
+      max-width: 100%;
+      margin: 0 auto;
+      padding: 14px 10px 92px;
+      position:relative;
+      z-index:1;
     }
 
-    /* HEADER */
-    header {
+    /* MENÚ TABS */
+    .tabsBar{
       position: sticky;
       top: 0;
-      z-index: 1000;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(10px);
-      padding: 16px 24px;
-      text-align: center;
+      z-index: 50;
+      padding: 10px 0 12px;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(to bottom, rgba(0,0,0,.65), rgba(0,0,0,.25));
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      margin-bottom: 14px;
+      overflow: visible;
     }
-
-    header h1 {
-      font-size: 1.2rem;
-      letter-spacing: 1px;
+    .tabs{
+      display:flex;
+      gap:10px;
+      overflow-x:auto;
+      overflow-y:visible;
+      padding: 0 2px 10px;
+      scroll-snap-type:x mandatory;
+      align-items:center;
     }
-
-    /* MAIN CONTENT */
-    main {
-      padding: 60px 20px;
-      max-width: 1200px;
-      margin: auto;
+    .tab{
+      scroll-snap-align:start;
+      flex:0 0 auto;
+      text-decoration:none;
+      color: rgba(255,255,255,.88);
+      font-weight: 800;
+      font-size: 12.5px;
+      padding: 10px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.07);
+      white-space: nowrap;
+      cursor:pointer;
     }
+    .tab:hover{filter:brightness(1.06)}
+    .tab:active{transform:scale(.99)}
 
-    /* VIDEO SECTION */
-    .videoGrid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 40px;
+    /* Dropdown Learn */
+    .tabDrop{ position: relative; display:inline-block; }
+    .dropMenu{
+      position:absolute;
+      top: calc(100% + 10px);
+      left:0;
+      min-width: 240px;
+      background: rgba(0,0,0,.94);
+      border: 1px solid rgba(255,255,255,.14);
+      border-radius: 16px;
+      padding: 8px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.6);
+      transform: translateY(0) scale(.98);
+      transform-origin: top left;
+      opacity: 0;
+      pointer-events:none;
+      z-index: 999;
     }
-
-    .videoCard {
-      background: rgba(255,255,255,0.05);
-      border-radius: 20px;
-      padding: 24px;
-      text-align: center;
+    .tabDrop.open .dropMenu{
+      opacity: 1;
+      pointer-events:auto;
+      transform: translateY(0) scale(1);
     }
+    .dropMenu a{
+      display:block;
+      padding: 11px 10px;
+      border-radius: 12px;
+      text-decoration:none;
+      color: rgba(255,255,255,.92);
+      font-weight: 800;
+      font-size: 12.5px;
+    }
+    .dropMenu a:hover{ background: rgba(255,255,255,.08); }
 
-    .videoFrame {
+    .card{
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .sectionTitle{
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.10);
+    }
+    .sectionTitle h2{ margin:0; font-size:16px; letter-spacing:.2px; }
+
+    .content{ display:grid; grid-template-columns: 1fr; gap:18px; }
+
+    /* Videos base */
+    .videoGrid{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:16px;
+      padding:14px 8px;
+      flex-wrap:wrap;
+    }
+    .videoCard{
+      padding:12px;
+      width:320px;
+      max-width:45vw;
+    }
+    .videoFrame{
+      position:relative;
+      width:100%;
+      aspect-ratio:16/9;
+      border-radius:16px;
+      overflow:hidden;
+      background:#000;
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .videoFrame iframe{width:100%;height:100%;border:0}
+    .videoLabel{ margin:10px 2px 0; font-weight:900; font-size:14px; letter-spacing:.2px; }
+    .videoNote{ margin:6px 2px 0; color:rgba(242,245,244,.80); font-size:12.5px; }
+
+    /* ====== 3D CAROUSEL ====== */
+    .carousel3dCard{
+      padding: 12px 12px 16px;
+      width: 380px;
+      max-width: 45vw;
+    }
+    .carouselTitle{
+      font-weight: 950;
+      margin: 2px 2px 10px;
+      font-size: 14px;
+      letter-spacing:.2px;
+    }
+    .c3dShell{
       position: relative;
       width: 100%;
-      max-width: 720px;
-      aspect-ratio: 16 / 9;
-      margin: 0 auto 20px;
+      height: 320px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(240px 220px at 30% 30%, rgba(255,255,255,.08), transparent 60%),
+        radial-gradient(260px 260px at 70% 60%, rgba(120,210,255,.10), transparent 62%),
+        rgba(0,0,0,.18);
+      overflow: hidden;
     }
-
-    .videoFrame iframe {
-      width: 100%;
-      height: 100%;
-      border-radius: 16px;
-      border: none;
+    .c3dHint{
+      margin: 10px 2px 0;
+      font-size: 12px;
+      color: rgba(242,245,244,.78);
     }
-
-    .videoLabel {
-      font-size: 1.2rem;
-      font-weight: bold;
-      margin-bottom: 8px;
+    .c3dScene{
+      position:absolute;
+      inset:0;
+      perspective: 1200px;
+      display:grid;
+      place-items:center;
+      user-select:none;
+      touch-action: pan-y;
     }
-
-    .videoNote {
-      opacity: 0.85;
-      font-size: 0.95rem;
+    .c3dRing{
+      position: relative;
+      width: 260px;
+      height: 260px;
+      transform-style: preserve-3d;
+      will-change: transform;
     }
-
-    /* FOOTER */
-    .siteFooter {
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(10px);
-      padding: 60px 20px;
-      margin-top: 80px;
+    .c3dItem{
+      position:absolute;
+      top:50%;
+      left:50%;
+      width: 170px;
+      height: 170px;
+      transform-style: preserve-3d;
+      transform: translate(-50%,-50%);
+      border-radius: 18px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow:
+        0 18px 45px rgba(0,0,0,.55),
+        0 0 0 1px rgba(255,255,255,.06) inset;
+      cursor:pointer;
+      background:#000;
     }
-
-    .footerLinks {
-      display: flex;
-      justify-content: center;
-      gap: 24px;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
+    .c3dItem img{
+      width:100%;
+      height:100%;
+      object-fit: cover;
+      display:block;
+      transform: translateZ(1px);
     }
-
-    .footerSection {
-      max-width: 900px;
-      margin: 0 auto 60px;
+    /* subtle lighting + shadows */
+    .c3dItem::before{
+      content:"";
+      position:absolute; inset:0;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,.28), transparent 35%),
+        radial-gradient(220px 220px at 80% 15%, rgba(255,255,255,.22), transparent 55%),
+        linear-gradient(0deg, rgba(0,0,0,.30), transparent 55%);
+      mix-blend-mode: screen;
+      opacity:.55;
+      pointer-events:none;
     }
-
-    .footerSection h2 {
-      margin-bottom: 16px;
+    .c3dItem::after{
+      content:"";
+      position:absolute;
+      inset:-22px;
+      background: radial-gradient(circle at 50% 120%, rgba(0,0,0,.55), transparent 60%);
+      transform: translateZ(-1px);
+      opacity:.55;
+      pointer-events:none;
     }
-
-    .footerSection h3 {
-      margin-top: 20px;
-      color: #9ae6b4;
+    .c3dControls{
+      position:absolute;
+      left:12px;
+      right:12px;
+      bottom:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      pointer-events:none;
     }
-
-    .footerSection ul {
-      padding-left: 20px;
+    .c3dBtn{
+      pointer-events:auto;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.30);
+      color:#fff;
+      padding: 8px 10px;
+      border-radius: 14px;
+      font-weight: 900;
+      cursor:pointer;
+      backdrop-filter: blur(8px);
     }
+    .c3dBtn:active{ transform: scale(.99); }
 
-    .disclaimer {
-      margin-top: 20px;
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-
-    .footerBottom {
-      text-align: center;
-      font-size: 0.85rem;
-      opacity: 0.6;
-    }
-
-    /* MOBILE */
-    @media (max-width: 768px) {
-      header h1 {
-        font-size: 1rem;
+    /* Desktop 3 columnas */
+    @media (min-width: 900px){
+      .videoGrid{
+        display: grid !important;
+        grid-template-columns: 1fr 400px 1fr;
+        align-items: start;
+        gap: 16px;
       }
+      .videoCard{ width: 100% !important; max-width: none !important; }
+      .carousel3dCard{ width: 100% !important; max-width: none !important; }
+    }
+    /* Mobile swipe section */
+    @media (max-width: 899px){
+      .videoGrid{
+        display: flex !important;
+        gap: 14px;
+        overflow-x: auto;
+        padding: 14px 10px;
+        scroll-snap-type: x mandatory;
+        flex-wrap: nowrap;
+      }
+      .videoGrid > .videoCard,
+      .videoGrid > .carousel3dCard{
+        flex: 0 0 86vw;
+        max-width: 86vw;
+        scroll-snap-align: center;
+      }
+      .c3dShell{ height: 300px; }
+      .c3dRing{ width: 240px; height: 240px; }
+      .c3dItem{ width: 160px; height: 160px; }
+    }
+
+    /* CTA + FORM */
+    .twoCols{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      padding:14px;
+      align-items:start;
+    }
+    @media(max-width:900px){ .twoCols{grid-template-columns:1fr;} }
+
+    .btnRow{ display:grid; grid-template-columns: 1fr; gap:10px; margin-top:10px; }
+    .btn{
+      display:inline-flex;
+      justify-content:center;
+      align-items:center;
+      gap:10px;
+      width:100%;
+      padding:12px 14px;
+      border-radius:16px;
+      font-weight:900;
+      text-decoration:none;
+      border:1px solid rgba(255,255,255,.14);
+      cursor:pointer;
+      transition: transform .08s ease, filter .12s ease;
+      user-select:none;
+    }
+    .btn:hover{filter:brightness(1.03)}
+    .btn:active{transform:scale(.99)}
+    .btn.primary{
+      background:linear-gradient(135deg,#33d17a,#2bbf6f);
+      color:#08110c;
+      box-shadow:0 14px 40px rgba(51,209,122,.20);
+    }
+    .btn.secondary{
+      background:rgba(255,255,255,.08);
+      color:var(--text);
+    }
+    .disclaimer{
+      margin:10px 0 0;
+      font-size:10px;
+      color:rgba(255,255,255,.65);
+      line-height:1.35;
+    }
+
+    .infoCard,.formCard{padding:18px}
+    .note{margin:0 0 14px;color:var(--muted);font-size:13px;}
+    ul{padding-left:18px;margin:0 0 14px}
+    li{margin:8px 0;color:rgba(242,245,244,.88)}
+    h3{margin:0 0 10px}
+
+    label{font-size:12px;color:rgba(242,245,244,.88);display:block;margin:2px 0 6px}
+    input,textarea,select{
+      width:100%;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.14);
+      background:rgba(0,0,0,.25);
+      color:var(--text);
+      outline:none;
+    }
+    textarea{min-height:96px;resize:vertical}
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media(max-width:520px){ .row2{grid-template-columns:1fr} }
+    .submit{
+      margin-top:6px;
+      background:linear-gradient(135deg,#ffd166,#f0c04f);
+      color:#12100b;
+      font-weight:950;
+    }
+    .tiny{margin:10px 0 0;font-size:11px;color:var(--muted);}
+
+    /* About Us section */
+    .aboutWrap{ padding: 14px; display:none; }
+    .aboutWrap.open{ display:block; }
+    .aboutBox{
+      padding: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: 18px;
+      background: rgba(0,0,0,.18);
+    }
+    .aboutBox h3{ margin:0 0 10px; }
+    .aboutBox p{ margin:0 0 10px; color: rgba(242,245,244,.86); }
+    .aboutBox .small{
+      margin-top: 10px;
+      font-size: 11px;
+      color: rgba(255,255,255,.72);
+      line-height: 1.35;
+    }
+
+    /* IA section */
+    .aiWrap{ display:grid; grid-template-columns:1fr; gap:14px; padding:14px; }
+    .aiInfo{
+      padding:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      border-radius: 18px;
+    }
+
+    /* ===== MODALS (fade-in elegante) ===== */
+    .modal{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background: rgba(0,0,0,.0);
+      z-index: 9999;
+      padding: 16px;
+      transition: background .22s ease;
+    }
+    .modal.open{
+      display:flex;
+      background: rgba(0,0,0,.78);
+    }
+
+    .modalBox{
+      width: min(1060px, 95vw);
+      height: min(720px, 92dvh);
+      background: rgba(0,0,0,.96);
+      outline: 2px solid rgba(255,255,255,.10);
+      filter: saturate(1.05) contrast(1.08);
+      border:1px solid rgba(255,255,255,.14);
+      border-radius: 22px;
+      box-shadow: 0 22px 80px rgba(0,0,0,.60);
+      overflow:hidden;
+      position:relative;
+      display:flex;
+      flex-direction:column;
+
+      opacity: 0;
+      transform: translateY(12px) scale(.985);
+      transition: opacity .22s ease, transform .22s ease;
+    }
+    .modal.open .modalBox{
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+
+    .modalTop{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 12px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+    }
+    .modalTitle{ font-weight:950; font-size:13px; color:rgba(255,255,255,.92); letter-spacing:.2px; }
+    .modalActions{ display:flex; gap:10px; align-items:center; }
+    .modalBtn{
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.10);
+      color:#fff;
+      padding: 8px 10px;
+      border-radius: 14px;
+      font-weight: 900;
+      cursor:pointer;
+      text-decoration:none;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+    }
+    .modalBtn:active{ transform: scale(.99); }
+
+    .modalFrame{ flex:1; background:#000; min-height:0; }
+    .modalFrame iframe{ width:100%; height:100%; border:0; display:block; }
+
+    /* Modal pequeño (para Spotify) */
+    .modalBox.small{
+      width: min(520px, 95vw);
+      height: auto;
+      max-height: 92dvh;
+    }
+    .modalBox.small .modalFrame{ background: transparent; }
+    .spotifyWrap{
+      padding: 14px;
+    }
+    .spotifyNote{
+      margin: 10px 2px 0;
+      font-size: 12px;
+      color: rgba(255,255,255,.72);
+      line-height: 1.35;
+    }
+
+    @media (max-width: 520px){
+      .modal{
+        padding: 0 !important;
+        align-items: stretch !important;
+        justify-content: stretch !important;
+      }
+      .modalBox{
+        width: 100vw !important;
+        height: 100dvh !important;
+        border-radius: 0 !important;
+        outline: none !important;
+        background: rgba(0,0,0,.98) !important;
+      }
+      .modalBox.small{
+        width: 100vw !important;
+        height: 100dvh !important;
+        border-radius: 0 !important;
+      }
+      .modalTop{
+        position: sticky;
+        top: 0;
+        z-index: 2;
+        background: rgba(0,0,0,.92) !important;
+        padding-top: calc(10px + env(safe-area-inset-top)) !important;
+        padding-bottom: 10px !important;
+        min-height: 58px !important;
+      }
+      .modalTitle{ font-size: 12px !important; }
+      .modalActions .modalBtn{
+        padding: 8px 10px !important;
+        border-radius: 12px !important;
+        font-size: 12px !important;
+      }
+    }
+
+    /* Footer social */
+    footer{
+      margin-top: 18px;
+      padding: 18px 14px 8px;
+      text-align:center;
+      color: rgba(242,245,244,.75);
+    }
+    .socialRow{
+      display:flex;
+      justify-content:center;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top: 10px;
+    }
+    .iconBtn{
+      width:44px;height:44px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.07);
+      text-decoration:none;
+    }
+    .iconBtn svg{ width:22px; height:22px; fill: rgba(255,255,255,.92); }
+
+    /* CEO & Founders (2 imágenes) */
+    .ceoBlock{
+      margin: 14px auto 0;
+      max-width: 560px;
+      padding: 12px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
+    }
+    .ceoTitle{
+      font-weight: 950;
+      letter-spacing:.2px;
+      font-size: 13px;
+      margin: 0 0 10px;
+      color: rgba(255,255,255,.92);
+    }
+    .ceoImg{
+      width: 100%;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: 0 16px 50px rgba(0,0,0,.55);
+      display:block;
+      object-fit: cover;
+    }
+
+    /* Bot flotante AI (derecha) */
+    .fab-ai{
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 10000;
+      width: 64px;
+      height: 64px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.35);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      padding: 0;
+    }
+    .fab-ai:hover{ filter: brightness(1.06); }
+    .fab-ai:active{ transform: scale(.98); }
+    .fab-ai img{
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.25);
+      object-fit: cover;
+      display:block;
+    }
+    .fab-ai::before{
+      content:"";
+      position:absolute;
+      inset:-10px;
+      border-radius: 24px;
+      border: 2px solid rgba(120,210,255,.20);
+      animation: fabPulse 1.8s ease-in-out infinite;
+    }
+    @keyframes fabPulse{
+      0%{ transform: scale(.92); opacity: .15; }
+      50%{ transform: scale(1.05); opacity: .35; }
+      100%{ transform: scale(.92); opacity: .15; }
+    }
+
+    /* Botón flotante Música (izquierda) */
+    .fab-music{
+      position: fixed;
+      left: 18px;
+      bottom: 18px;
+      z-index: 10000;
+      height: 46px;
+      padding: 0 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.16);
+      background: rgba(0,0,0,.35);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 18px 60px rgba(0,0,0,.55);
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color:#fff;
+      font-weight: 950;
+      letter-spacing:.2px;
+    }
+    .fab-music:hover{ filter: brightness(1.06); }
+    .fab-music:active{ transform: scale(.98); }
+    .fab-dot{
+      width: 10px; height: 10px; border-radius: 999px;
+      background: rgba(120,210,255,.9);
+      box-shadow: 0 0 0 6px rgba(120,210,255,.14);
+    }
+
+    @media (max-width:520px){
+      .fab-ai{ right: 14px; bottom: 14px; }
+      .fab-music{ left: 14px; bottom: 14px; }
+      .ceoBlock{ max-width: 92vw; }
     }
   </style>
 </head>
 
 <body>
+  <div class="bg-logo" aria-hidden="true"></div>
+  <div class="bg-dim" aria-hidden="true"></div>
+  <canvas id="particles" aria-hidden="true"></canvas>
 
-  <!-- HEADER -->
-  <header>
-    <h1>NuevaEra369</h1>
-  </header>
+  <div class="wrap">
+    <!-- TABS -->
+    <div class="tabsBar" role="navigation" aria-label="Menú">
+      <div class="tabs">
+        <a class="tab" href="https://vitalhealthglobal.com/collections/all?refID=81951" target="_blank" rel="noopener">Shop Now</a>
 
-  <!-- MAIN -->
-  <main>
-
-    <!-- VIDEOS -->
-    <section class="videoGrid">
-      <div class="card videoCard">
-        <div class="videoFrame">
-          <iframe
-            src="https://www.youtube.com/shorts/PakegkoEOJA"
-            title="Esto es la definición de Vital Health Global"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
+        <div class="tabDrop" id="learnDrop">
+          <button class="tab" type="button" aria-haspopup="true" aria-expanded="false">Learn More ▾</button>
+          <div class="dropMenu" role="menu" aria-label="Learn More">
+            <a href="#about" role="menuitem" id="openAbout">About Us</a>
+          </div>
         </div>
 
-        <div class="videoLabel">
-          Esto es la definición de Vital Health Global
+        <a class="tab" href="#videos">Watch Testimonios</a>
+        <a class="tab" href="#ai">Canal de Educación IA</a>
+        <a class="tab" href="https://my.vitalhealthglobal.com/GenesisFranco-L" target="_blank" rel="noopener">Careers</a>
+      </div>
+    </div>
+
+    <main class="content">
+      <!-- VIDEOS + 3D CAROUSEL -->
+      <section class="card" id="videos">
+        <div class="sectionTitle"><h2>Videos</h2></div>
+
+        <div class="videoGrid">
+          <!-- VIDEO 1 -->
+          <div class="card videoCard">
+            <div class="videoFrame">
+              <iframe
+                src="https://www.youtube.com/embed/qJKnNbNWYeE?rel=0&modestbranding=1"
+                title="Esto es la definición de Vital Health Global.."
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            </div>
+            <div class="videoLabel">Esto es la definición de Vital Health Global..</div>
+            <div class="videoNote">Míralo completo y luego llena el formulario para el siguiente paso.</div>
+          </div>
+
+          <!-- 3D CAROUSEL -->
+          <div class="card carousel3dCard" id="products">
+            <div class="carouselTitle">Productos (3D)</div>
+
+            <div class="c3dShell">
+              <div class="c3dScene" id="c3dScene">
+                <div class="c3dRing" id="c3dRing" aria-label="Carrusel 3D de productos"></div>
+              </div>
+
+              <div class="c3dControls">
+                <button class="c3dBtn" type="button" id="c3dPrev">◀</button>
+                <button class="c3dBtn" type="button" id="c3dNext">▶</button>
+              </div>
+            </div>
+
+            <div class="c3dHint">Arrastra para girar. Toca una foto para verla grande.</div>
+          </div>
+
+          <!-- VIDEO 2 -->
+          <div class="card videoCard">
+            <div class="videoFrame">
+              <iframe
+                src="https://www.youtube.com/embed/gXOn8bfBLnQ?start=65&rel=0&modestbranding=1"
+                title="Testimonios Reales De Los Productos"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen></iframe>
+            </div>
+            <div class="videoLabel">Testimonios Reales De Los Productos</div>
+            <div class="videoNote">Historias reales de personas que decidieron nutrir su cuerpo.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- IA INFO -->
+      <section class="card" id="ai">
+        <div class="sectionTitle"><h2>Canal de Educación IA</h2></div>
+        <div class="aiWrap">
+          <div class="aiInfo">
+            <h3 style="margin:0 0 10px;">Vital Health AI</h3>
+            <p class="note" style="margin:0 0 10px;">Para abrir el chat, toca el bot flotante 🤖 (abajo a la derecha).</p>
+            <ul>
+              <li>Escribe tu meta: energía, estrés, digestión, sueño, control de peso, etc.</li>
+              <li>Describe cómo te sientes (sin datos sensibles).</li>
+              <li>Si quieres un plan, llena el formulario al final.</li>
+            </ul>
+            <p class="disclaimer" style="margin:0;">Esta IA es informativa. No diagnostica, no trata ni cura enfermedades. No reemplaza atención médica.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT + FORM -->
+      <section class="card" id="learn">
+        <div class="sectionTitle"><h2>Da el siguiente paso</h2></div>
+
+        <div class="aboutWrap" id="about">
+          <div class="aboutBox">
+            <h3>About Us</h3>
+            <p>Somos un equipo inspirado por una idea simple pero transformadora: el bienestar comienza cuando aprendes a escuchar tu cuerpo.</p>
+            <p>Esta página nació con el propósito de crear un espacio donde las personas puedan informarse, explorar y conocer herramientas que apoyen un estilo de vida más equilibrado y consciente. A través de Vital Health Global, compartimos productos enfocados en el bienestar integral, siempre desde la educación y la responsabilidad.</p>
+            <p>No creemos en soluciones rápidas ni promesas irreales. Creemos en hábitos, constancia y decisiones informadas. Nuestro enfoque es acompañar, orientar y brindar acceso a información clara para que cada persona tome el control de su propio bienestar.</p>
+            <p>Más que un equipo, somos una comunidad que cree en el crecimiento personal, la transparencia y el poder de vivir con intención.</p>
+            <p><strong>Bienvenido/a.</strong> Aquí no solo encuentras productos, encuentras un camino hacia el equilibrio.</p>
+            <div class="small">
+              <strong>Disclaimer</strong><br>
+              Este sitio tiene fines informativos y educativos. Los productos no sustituyen tratamientos médicos ni la consulta con profesionales de la salud.
+            </div>
+          </div>
         </div>
 
-        <div class="videoNote">
-          Míralo completo y luego llena el formulario para el siguiente paso.
+        <div class="twoCols">
+          <div class="card infoCard">
+            <h3>No es normal sentirse mal</h3>
+            <p class="note">Aquí les mostraré cómo nutrir su cuerpo y mejorar su calidad de vida.</p>
+            <ul>
+              <li>Me dices cómo te sientes hoy y tu meta principal.</li>
+              <li>Identificamos hábitos y áreas a fortalecer con nutrición consciente.</li>
+              <li>Te guío para tomar decisiones informadas (sin prometer curas).</li>
+            </ul>
+
+            <div class="btnRow">
+              <a href="#formulario" class="btn primary">👉 Llenar el formulario</a>
+
+              <a class="btn secondary"
+                 href="https://wa.me/19564421379?text=Hola%20Genesis%2C%20vi%20tu%20pagina%20GenArt%20y%20quiero%20dar%20el%20siguiente%20paso%20para%20nutrir%20mi%20cuerpo.%20%C2%BFMe%20orientas%3F"
+                 target="_blank" rel="noopener">💬 WhatsApp (Hablar contigo)</a>
+
+              <a class="btn secondary"
+                 href="https://vitalhealthglobal.com/collections/all?refID=81951"
+                 target="_blank" rel="noopener">🛒 Compra aquí</a>
+            </div>
+
+            <p class="disclaimer">
+              Contenido informativo y educativo. No diagnosticamos, no tratamos ni curamos enfermedades.
+              No reemplaza consultas médicas ni estudios clínicos. Resultados pueden variar.
+            </p>
+          </div>
+
+          <div class="card formCard" id="formulario">
+            <h3>Formulario de Bienestar</h3>
+            <p class="note">Al enviar, la información llega a tu correo (Formspree).</p>
+
+            <form action="https://formspree.io/f/xnneywra" method="POST">
+              <div class="row2">
+                <div>
+                  <label for="nombre">Nombre</label>
+                  <input id="nombre" name="nombre" type="text" placeholder="Tu nombre" required />
+                </div>
+                <div>
+                  <label for="whatsapp">WhatsApp</label>
+                  <input id="whatsapp" name="whatsapp" type="tel" placeholder="956-000-0000" required />
+                </div>
+              </div>
+
+              <div>
+                <label for="correo">Correo</label>
+                <input id="correo" name="correo" type="email" placeholder="tucorreo@email.com" required />
+              </div>
+
+              <div>
+                <label for="preocupacion">1) ¿Qué es lo que más te preocupa de tu salud hoy?</label>
+                <textarea id="preocupacion" name="preocupacion" required placeholder="Escribe aquí..."></textarea>
+              </div>
+
+              <div class="row2">
+                <div>
+                  <label for="energia">2) Nivel de energía diario (1–10)</label>
+                  <select id="energia" name="energia" required>
+                    <option value="" disabled selected>Selecciona</option>
+                    <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
+                    <option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="sintomas">3) ¿Qué sientes más seguido?</label>
+                  <select id="sintomas" name="sintomas" required>
+                    <option value="" disabled selected>Selecciona</option>
+                    <option>Cansancio</option>
+                    <option>Inflamación</option>
+                    <option>Estrés / ansiedad</option>
+                    <option>Dolor / tensión</option>
+                    <option>Falta de enfoque</option>
+                    <option>Otro</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label for="motivo">4) ¿Qué te motivó a llenar este formulario?</label>
+                <textarea id="motivo" name="motivo" required placeholder="Cuéntame en tus palabras..."></textarea>
+              </div>
+
+              <input type="hidden" name="_subject" value="Nuevo formulario GenArt - Bienestar" />
+              <button class="btn submit" type="submit">✅ Enviar y continuar</button>
+
+              <p class="tiny">*Este formulario no es diagnóstico médico ni sustituye consulta profesional.</p>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Social Footer + CEO (2 imágenes) -->
+      <section class="card" id="social">
+        <div class="sectionTitle"><h2>Sígueme</h2></div>
+        <footer>
+          <div class="socialRow">
+            <a class="iconBtn" href="https://www.facebook.com/genesis.franco.56/" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg viewBox="0 0 24 24"><path d="M13.5 22v-8h2.7l.4-3.1h-3.1V8.9c0-.9.3-1.6 1.6-1.6h1.7V4.6c-.3 0-1.4-.1-2.6-.1-2.6 0-4.4 1.6-4.4 4.6V11H7v3.1h2.7v8h3.8z"/></svg>
+            </a>
+            <a class="iconBtn" href="https://www.youtube.com/@CarlosGarcia-d6p1l" target="_blank" rel="noopener" aria-label="YouTube">
+              <svg viewBox="0 0 24 24"><path d="M21.6 7.2s-.2-1.6-.8-2.3c-.8-.8-1.7-.8-2.1-.9C15.9 3.7 12 3.7 12 3.7h0s-3.9 0-6.7.3c-.4.1-1.3.1-2.1.9-.6.7-.8 2.3-.8 2.3S2.1 9 2.1 10.7v1.6c0 1.7.3 3.5.3 3.5s.2 1.6.8 2.3c.8.8 1.9.8 2.4.9 1.7.2 6.4.3 6.4.3s3.9 0 6.7-.3c.4-.1 1.3-.1 2.1-.9.6-.7.8-2.3.8-2.3s.3-1.8.3-3.5v-1.6c0-1.7-.3-3.5-.3-3.5zM10.3 14.8V8.9l5.2 3-5.2 2.9z"/></svg>
+            </a>
+          </div>
+
+          <!-- CEO & Founders (2 imágenes en orden) -->
+          <div class="ceoBlock">
+            <div class="ceoTitle">CEO &amp; Founders</div>
+            <img class="ceoImg" src="art-ceo.png" alt="Art CEO">
+            <img class="ceoImg" src="ceo.png" alt="CEO & Founders" style="margin-top:12px">
+          </div>
+
+          <p class="disclaimer" style="margin-top:12px;">
+            Contenido informativo y educativo. No diagnosticamos, no tratamos ni curamos enfermedades. No reemplaza consultas médicas.
+          </p>
+        </footer>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- MODAL POP-OUT IA -->
+  <div class="modal" id="aiModal" aria-hidden="true">
+    <div class="modalBox" role="dialog" aria-modal="true" aria-label="Vital Health AI">
+      <div class="modalTop">
+        <div class="modalTitle">Vital Health AI (Pop-out)</div>
+        <div class="modalActions">
+          <a class="modalBtn"
+             href="https://app.relevanceai.com/agents/d7b62b/3771ceca-5688-4567-9447-dfdde9f4d995/c15f3ad3-8c1c-4082-8992-a4ed89e30dfc/embed-chat?hide_tool_steps=false&hide_file_uploads=false&hide_conversation_list=false&bubble_style=agent&primary_color=%23685FFF&bubble_icon=pd%2Fchat&input_placeholder_text=Type+your+message...&hide_logo=false&hide_description=false"
+             target="_blank" rel="noopener">Open in tab</a>
+          <button class="modalBtn" id="closeAI" type="button">Close ✕</button>
         </div>
       </div>
-    </section>
-
-  </main>
-
-  <!-- FOOTER -->
-  <footer class="siteFooter">
-
-    <div class="footerLinks">
-      <a href="#terms">Terms</a>
-      <a href="#privacy">Privacy</a>
-      <a href="#security">Security</a>
-      <a href="#contact">Contact</a>
+      <div class="modalFrame">
+        <iframe id="aiIframe" src="" title="Vital Health AI Chat" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
     </div>
+  </div>
 
-    <section id="terms" class="footerSection">
-      <h2>Terms & Conditions</h2>
-      <p>
-        Al acceder y utilizar este sitio web, aceptas cumplir con los siguientes términos y condiciones.
-        Si no estás de acuerdo con alguna parte de estos términos, te recomendamos no utilizar este sitio.
-      </p>
-
-      <h3>Uso del Sitio</h3>
-      <p>
-        Este sitio tiene fines informativos, educativos y de bienestar general. El contenido presentado,
-        incluyendo videos, textos y herramientas de inteligencia artificial,
-        no sustituye asesoría médica, legal o profesional.
-      </p>
-
-      <h3>Responsabilidad del Usuario</h3>
-      <p>
-        El uso de este sitio es bajo tu propia responsabilidad. No garantizamos resultados específicos.
-      </p>
-
-      <p class="disclaimer">
-        Este sitio no ofrece diagnósticos médicos ni tratamientos. Los productos y contenidos
-        no están destinados a curar, tratar o prevenir enfermedades.
-      </p>
-    </section>
-
-    <section id="privacy" class="footerSection">
-      <h2>Privacy Policy</h2>
-      <p>
-        Respetamos tu privacidad. La información proporcionada se utiliza únicamente para contacto,
-        seguimiento y mejora de nuestros servicios.
-      </p>
-    </section>
-
-    <section id="security" class="footerSection">
-      <h2>Security</h2>
-      <p>
-        Utilizamos prácticas estándar para proteger la información. Sin embargo, ningún sistema
-        en línea es 100% seguro.
-      </p>
-    </section>
-
-    <section id="contact" class="footerSection">
-      <h2>Contact</h2>
-      <ul>
-        <li>Email: contacto@nuevaera369.com</li>
-        <li>WhatsApp: +1 956 442 1379</li>
-      </ul>
-    </section>
-
-    <div class="footerBottom">
-      © 2025 NuevaEra369. All rights reserved.
+  <!-- MODAL PARA IMAGENES -->
+  <div class="modal" id="imgModal" aria-hidden="true">
+    <div class="modalBox" role="dialog" aria-modal="true" aria-label="Producto">
+      <div class="modalTop">
+        <div class="modalTitle">Producto</div>
+        <div class="modalActions">
+          <button class="modalBtn" id="closeImg" type="button">Close ✕</button>
+        </div>
+      </div>
+      <div class="modalFrame" style="display:flex;align-items:center;justify-content:center;background:#000;">
+        <img id="bigImg" alt="Producto" style="max-width:100%;max-height:100%;object-fit:contain;">
+      </div>
     </div>
+  </div>
 
-  </footer>
+  <!-- MODAL SPOTIFY (fade-in elegante) -->
+  <div class="modal" id="musicModal" aria-hidden="true">
+    <div class="modalBox small" role="dialog" aria-modal="true" aria-label="Música">
+      <div class="modalTop">
+        <div class="modalTitle">Música (Spotify)</div>
+        <div class="modalActions">
+          <a class="modalBtn" href="https://open.spotify.com/track/75ra3ykjjDGpLardaFmZBV" target="_blank" rel="noopener">Open</a>
+          <button class="modalBtn" id="closeMusic" type="button">Close ✕</button>
+        </div>
+      </div>
+      <div class="spotifyWrap">
+        <iframe
+          style="border-radius:12px"
+          src="https://open.spotify.com/embed/track/75ra3ykjjDGpLardaFmZBV?utm_source=generator"
+          width="100%"
+          height="152"
+          frameborder="0"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"></iframe>
 
+        <div class="spotifyNote">
+          Presiona <b>Play</b> para activar la música. (Los celulares bloquean autoplay automático.)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bot flotante AI -->
+  <button class="fab-ai" id="fabAI" type="button" aria-label="Abrir Vital Health AI">
+    <img src="vh-bot.png" alt="Vital Health AI" />
+  </button>
+
+  <!-- Botón flotante Música -->
+  <button class="fab-music" id="fabMusic" type="button" aria-label="Abrir música">
+    <span class="fab-dot" aria-hidden="true"></span>
+    Música
+  </button>
+
+  <script>
+    // Learn dropdown (arreglado + pop-out completo)
+    (function(){
+      const drop = document.getElementById("learnDrop");
+      if(!drop) return;
+      const btn = drop.querySelector("button.tab");
+      const aboutWrap = document.getElementById("about");
+      const openAbout = document.getElementById("openAbout");
+
+      function close(){
+        drop.classList.remove("open");
+        btn.setAttribute("aria-expanded","false");
+      }
+      function toggle(){
+        const isOpen = drop.classList.toggle("open");
+        btn.setAttribute("aria-expanded", String(isOpen));
+      }
+
+      btn.addEventListener("click", (e)=>{ e.preventDefault(); e.stopPropagation(); toggle(); });
+
+      openAbout.addEventListener("click", (e)=>{
+        e.preventDefault();
+        close();
+        if(aboutWrap){
+          aboutWrap.classList.add("open");
+          setTimeout(()=>{ aboutWrap.scrollIntoView({behavior:"smooth", block:"start"}); }, 60);
+        }
+      });
+
+      document.addEventListener("click", ()=> close());
+      window.addEventListener("keydown", (e)=>{ if(e.key==="Escape") close(); });
+    })();
+
+    // Modal IA
+    (function(){
+      const modal = document.getElementById("aiModal");
+      const closeBtn = document.getElementById("closeAI");
+      const iframe = document.getElementById("aiIframe");
+      const fabBtn = document.getElementById("fabAI");
+
+      const AI_URL = "https://app.relevanceai.com/agents/d7b62b/3771ceca-5688-4567-9447-dfdde9f4d995/c15f3ad3-8c1c-4082-8992-a4ed89e30dfc/embed-chat?hide_tool_steps=false&hide_file_uploads=false&hide_conversation_list=false&bubble_style=agent&primary_color=%23685FFF&bubble_icon=pd%2Fchat&input_placeholder_text=Type+your+message...&hide_logo=false&hide_description=false";
+
+      function openModal(){
+        iframe.src = AI_URL;
+        modal.classList.add("open");
+        modal.setAttribute("aria-hidden","false");
+        document.body.style.overflow = "hidden";
+      }
+      function closeModal(){
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden","true");
+        document.body.style.overflow = "";
+        iframe.src = "";
+      }
+
+      fabBtn.addEventListener("click", openModal);
+      closeBtn.addEventListener("click", closeModal);
+      modal.addEventListener("click", (e)=>{ if(e.target === modal) closeModal(); });
+      window.addEventListener("keydown", (e)=>{ if(modal.classList.contains("open") && e.key==="Escape") closeModal(); });
+    })();
+
+    // Modal imágenes
+    (function(){
+      const modal = document.getElementById("imgModal");
+      const bigImg = document.getElementById("bigImg");
+      const close = document.getElementById("closeImg");
+
+      function openImg(src){
+        bigImg.src = src;
+        modal.classList.add("open");
+        modal.setAttribute("aria-hidden","false");
+        document.body.style.overflow = "hidden";
+      }
+      function closeIt(){
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden","true");
+        document.body.style.overflow = "";
+        bigImg.src = "";
+      }
+
+      close.addEventListener("click", closeIt);
+      modal.addEventListener("click",(e)=>{ if(e.target===modal) closeIt(); });
+      window.addEventListener("keydown",(e)=>{ if(e.key==="Escape" && modal.classList.contains("open")) closeIt(); });
+
+      window.__openProductImg = openImg;
+    })();
+
+    // Modal Música (Spotify) + fade-in elegante (CSS)
+    (function(){
+      const modal = document.getElementById("musicModal");
+      const openBtn = document.getElementById("fabMusic");
+      const closeBtn = document.getElementById("closeMusic");
+
+      function open(){
+        modal.classList.add("open");
+        modal.setAttribute("aria-hidden","false");
+        document.body.style.overflow = "hidden";
+      }
+      function close(){
+        modal.classList.remove("open");
+        modal.setAttribute("aria-hidden","true");
+        document.body.style.overflow = "";
+      }
+
+      openBtn.addEventListener("click", open);
+      closeBtn.addEventListener("click", close);
+      modal.addEventListener("click", (e)=>{ if(e.target === modal) close(); });
+      window.addEventListener("keydown", (e)=>{ if(modal.classList.contains("open") && e.key==="Escape") close(); });
+    })();
+
+    // 3D Carousel (incluido)
+    (function(){
+      const ring = document.getElementById("c3dRing");
+      const prev = document.getElementById("c3dPrev");
+      const next = document.getElementById("c3dNext");
+      const scene = document.getElementById("c3dScene");
+      if(!ring || !scene) return;
+
+      const images = [
+        "d-fenz.png","genius-shake.png","glutation-plus.jpg","ketokafe.jpg","lattekaffe.png",
+        "lovkafe.jpg","neurokafe.jpg","nourish.png","performance.png","sblance.png","smart-biotics.png",
+        "v-control.jpg","v-curcumax.jpg","v-fortyflora.jpg","v-glucalose.jpg","v-itadol.jpg","v-nitro.jpg",
+        "v-nrgy.jpg","v-organex.jpg","v-tedetox.jpg","vasculas.jpg","vdaily.jpg","vglutation.jpg",
+        "vitalage-collagen.jpg","vitalay.jpg","vitalboost.jpg","vitalpro.jpg","vitaren.jpg","vomega.jpg"
+      ];
+
+      ring.innerHTML = images.map((src, i) => `
+        <div class="c3dItem" data-src="${src.replace(/"/g,"&quot;")}" aria-label="Producto ${i+1}">
+          <img src="${src.replace(/"/g,"&quot;")}" alt="${src.replace(/"/g,"&quot;")}">
+        </div>
+      `).join("");
+
+      const items = Array.from(ring.querySelectorAll(".c3dItem"));
+      const N = items.length;
+
+      function computeRadius(){ return Math.max(260, Math.min(460, N * 14)); }
+      let radius = computeRadius();
+      let rotY = 0;
+      let auto = true;
+      let autoId = null;
+
+      function layout(){
+        radius = computeRadius();
+        const step = 360 / N;
+        items.forEach((el, idx)=>{
+          const a = step * idx;
+          el.style.transform = `translate(-50%,-50%) rotateY(${a}deg) translateZ(${radius}px)`;
+        });
+      }
+      function render(){ ring.style.transform = `rotateY(${rotY}deg)`; }
+
+      function spin(dir){
+        auto = false;
+        rotY += dir * (360 / N);
+        render();
+        setTimeout(()=>{ auto = true; }, 1200);
+      }
+      prev?.addEventListener("click", ()=> spin(+1));
+      next?.addEventListener("click", ()=> spin(-1));
+
+      ring.addEventListener("click", (e)=>{
+        const item = e.target.closest(".c3dItem");
+        if(!item) return;
+        const src = item.getAttribute("data-src");
+        if(window.__openProductImg) window.__openProductImg(src);
+      });
+
+      let dragging=false, startX=0, startRot=0;
+      function onDown(x){ dragging=true; startX=x; startRot=rotY; auto=false; if(autoId) cancelAnimationFrame(autoId); }
+      function onMove(x){ if(!dragging) return; const dx = x - startX; rotY = startRot + dx * 0.35; render(); }
+      function onUp(){
+        if(!dragging) return;
+        dragging=false;
+        const step = 360 / N;
+        rotY = Math.round(rotY / step) * step;
+        render();
+        setTimeout(()=>{ auto=true; }, 900);
+      }
+
+      scene.addEventListener("mousedown",(e)=> onDown(e.clientX));
+      window.addEventListener("mousemove",(e)=> onMove(e.clientX));
+      window.addEventListener("mouseup", onUp);
+
+      scene.addEventListener("touchstart",(e)=> onDown(e.touches[0].clientX), {passive:true});
+      scene.addEventListener("touchmove",(e)=> onMove(e.touches[0].clientX), {passive:true});
+      scene.addEventListener("touchend", onUp);
+
+      function loop(){
+        if(auto){ rotY -= 0.12; render(); }
+        autoId = requestAnimationFrame(loop);
+      }
+
+      window.addEventListener("resize", ()=>{ layout(); render(); });
+      layout(); render(); loop();
+    })();
+
+    // Partículas (incluidas)
+    (function(){
+      const canvas = document.getElementById("particles");
+      const ctx = canvas.getContext("2d");
+
+      let w=0,h=0,dpr=Math.max(1,Math.min(2,window.devicePixelRatio||1));
+      const particles=[];
+      const NUM=160;
+      const SPEED=0.55;
+
+      function resize(){
+        w=window.innerWidth; h=window.innerHeight;
+        canvas.width=Math.floor(w*dpr);
+        canvas.height=Math.floor(h*dpr);
+        canvas.style.width=w+"px";
+        canvas.style.height=h+"px";
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+      }
+      function rand(min,max){return Math.random()*(max-min)+min;}
+
+      function init(){
+        particles.length=0;
+        for(let i=0;i<NUM;i++){
+          particles.push({ x: rand(0,w), y: rand(0,h), r: rand(1.0, 2.8),
+            vx: rand(-SPEED, SPEED), vy: rand(-SPEED, SPEED), a: rand(0.35, 0.95) });
+        }
+      }
+
+      function tick(){
+        ctx.clearRect(0,0,w,h);
+
+        for(const p of particles){
+          p.x += p.vx; p.y += p.vy;
+          if(p.x < -10) p.x = w + 10;
+          if(p.x > w + 10) p.x = -10;
+          if(p.y < -10) p.y = h + 10;
+          if(p.y > h + 10) p.y = -10;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+          ctx.fillStyle = `rgba(190, 245, 255, ${p.a})`;
+          ctx.fill();
+        }
+
+        for(let i=0;i<particles.length;i++){
+          for(let j=i+1;j<particles.length;j++){
+            const a=particles[i], b=particles[j];
+            const dx=a.x-b.x, dy=a.y-b.y;
+            const dist=Math.sqrt(dx*dx + dy*dy);
+            if(dist < 150){
+              const alpha = (1 - dist/150) * 0.35;
+              ctx.strokeStyle = `rgba(120, 210, 255, ${alpha})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        requestAnimationFrame(tick);
+      }
+
+      window.addEventListener("resize", ()=>{ resize(); init(); });
+      resize(); init(); tick();
+    })();
+  </script>
 </body>
 </html>
