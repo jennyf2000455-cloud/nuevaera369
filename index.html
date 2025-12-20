@@ -109,7 +109,7 @@
     .tabDrop{ position: relative; display:inline-block; }
     .dropMenu{
       position:absolute;
-      top: calc(100% + 10px);
+      top: 100%;
       left:0;
       min-width: 240px;
       background: rgba(0,0,0,.94);
@@ -125,7 +125,7 @@
     }
     .tabDrop.open .dropMenu{
       opacity: 1;
-      pointer-events:auto;
+      pointer-events:visible;
       transform: translateY(0) scale(1);
     }
     .dropMenu a{
